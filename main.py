@@ -1,161 +1,52 @@
-from flask import Flask, render_template, request, jsonify
-import stock_news
-import stock_info
-from kakaoChatbot import render_json
+import streamlit as st
+import requests
+import zipfile
+import os
+import pandas as pd
+from bs4 import BeautifulSoup
+import warnings
 
-app = Flask(__name__,static_url_path='/static')
-app.config['JSON_AS_ASCII'] = False
-
-@app.route('/')
-def basic():
-    return render_template("test2.html")
-
-@app.route('/stock_info/<param>') #get echo api
-def get_stock_info(param):
-    try:
-        return stock_info.stock_info_ret(param)
-    except:
-        return jsonify({"param": param,"error":"Not Symbol"})
-
-@app.route('/stock_info', methods=['POST']) # 기본 동작
-def post_stock_info():
-    request_data = request.get_json()
-    try:
-        if (request_data["intent"]["name"] == "폴백 블록"):
-            # param = request_data['action']['params']['stock']
-            param = request_data['userRequest']['utterance'].replace('\n','').lower()
-            param = param.replace(' ','')
-            if ("," in param):
-                return jsonify(render_json.multi_item_carousel(param))
-            # print(request_data)
-            ret = stock_info.stock_info_ret(param)
-            return jsonify(ret)
-        else:
-            return render_json.simple_text("error")
-    except:
-        return render_json.simple_text("도움말 : 주식의 Symbol을 입력해주세요. (ex. AAPL, MSFT, GOOGL")
-
-@app.route('/multi_stock',methods=['POST'])
-def multi_stock_info():
-    request_data =request.get_json()
-    print(request_data)
-    try:
-        stocks = request_data['userRequest']['utterance'].replace('\n','').lower()
-        return jsonify(render_json.multi_item_carousel(stocks))
-    except:
-        return render_json.simple_text("도움말 : 주식의 Symbol을 입력해주세요. (ex. AAPL, MSFT, GOOGL")
-
-@app.route('/stock_info_deep', methods=['POST']) #회사 상세
-def post_stock_info_deep():
-    request_data = request.get_json()
-    try:
-        if (request_data["intent"]["name"] == "Fundamental"):
-            # param = request_data['action']['params']['stock']
-            param = request_data['action']['clientExtra']['stock'].replace('\n','').lower()
-            param = param.replace(' ','')
-            # print(request_data)
-            ret = stock_info.stock_info_ret_deep(param)
-            return jsonify(ret)
-        else:
-            return render_json.simple_text("error")
-    except:
-        return render_json.simple_text("error symbol")
-
-@app.route('/stock_news', methods=['POST']) #회사 뉴스
-def post_stock_news():
-    request_data = request.get_json()
-    try:
-        if (request_data["intent"]["name"] == "news"):
-            param_stock = str(request_data['action']['clientExtra']['stock']).replace('\n','').lower()
-            param_start = str(request_data['action']['clientExtra']['start']).replace('\n', '')
-            param_end = str(request_data['action']['clientExtra']['end']).replace('\n', '')
-            param_stock = param_stock.replace(' ','')
-            param_start = param_start.replace(' ', '')
-            param_end = param_end.replace(' ', '')
-            ret = stock_news.news_info(param_stock,int(param_start),int(param_end))
-            return jsonify(ret)
-        else:
-            return render_json.simple_text("error")
-    except:
-        return render_json.simple_text("error symbol")
-
-@app.route('/stock_outer', methods=['POST']) #리서치 전망
-def post_stock_outer():
-    request_data = request.get_json()
-    try:
-        if (request_data["intent"]["name"] == "outer"):
-            param_stock = str(request_data['action']['clientExtra']['stock']).replace('\n','').lower()
-            param_stock = param_stock.replace(' ','')
-            ret = stock_info.stock_rating(param_stock)
-            return jsonify(ret)
-        else:
-            return render_json.simple_text("error")
-    except:
-        return render_json.simple_text("error symbol")
-
-@app.route('/stock_fund/<param>') #get echo api
-def get_stock_fund(param):
-    try:
-        return jsonify(stock_info.stock_funddament(param))
-    except:
-        return jsonify({"param": param,"error":"Not Symbol"})
-
-@app.route('/stock_rating/<param>') #get echo api
-def get_stock_rating(param):
-    try:
-        return jsonify(stock_info.stock_rating(param))
-    except:
-        return jsonify({"param": param,"error":"Not Symbol"})
-
-@app.route('/echo_call', methods=['POST']) #post echo api
-def post_echo_call():
-    param = request.get_json()
-    ret = {
-        "version": "2.0",
-        "template": {
-            "outputs": [
-                {
-                    "simpleText": {
-                        "text": "hello, world"
-                    }
-                }
-            ]
-        }
-    }
-    return jsonify(ret)
-
-@app.route('/stock_news/<param>')#list_card
-def get_news_info(param):
-    try:
-        return jsonify(stock_news.news_info(param))
-    except:
-        return jsonify({"param": param,"error":"Not Symbol"})
-
-def get_news_trans(param):
-    pass
+warnings.filterwarnings(action='ignore')
+API_KEY = 'd7d1be298b9cac1558eab570011f2bb40e2a6825'
+headers= {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36',
+          'Accept-Encoding': '*', 'Connection': 'keep-alive'}
+st.set_page_config(layout='wide')
 
 
-@app.route("/news_trans",methods=['POST'])
-def animal():
-    req = request.get_json()
-    animal_type = req["action"]["detailParams"]["Animal_type"]["value"]  # json파일 읽기
-    answer = animal_type
 
-    # 답변 텍스트 설정
-    res = {
-        "version": "2.0",
-        "template": {
-            "outputs": [
-                {
-                    "simpleText": {
-                        "text": answer
-                    }
-                }
-            ]
-        }
-    }
+# def convert_df(df):
+#     return df.to_csv().encode('utf-8-sig')
 
-    # 답변 전송
-    return jsonify(res)
+
 if __name__ == '__main__':
-    app.run(debug=True)
+
+    knd = st.radio(
+        '채권 종류', ('전환사채권', '신주인수권부사채권', '교환사채권')
+    )
+
+    if knd == '전환사채권':
+        st.write('You selected 전환사채권')
+    elif knd == '신주인수권부사채권':
+        st.write('You selected 신주인수권부사채권')
+    else:
+        st.write("You selected 교환사채권")
+
+    # st.title('주식연계채권 발행내역 :money_with_wings:')
+    #
+    # corp = st.text_input('기업명', '삼성전자')
+    # start = st.date_input('시작일')
+    # end = st.date_input('종료일', min_value=start)
+
+    # button 생성하기
+    # if st.button('조회'):
+    #     df = get_corp_code(corp, start, end)
+    #     st.dataframe(df)
+    #
+    #     csv = convert_df(df)
+    #
+    #     st.download_button(
+    #         label="Download",
+    #         data=csv,
+    #         file_name='st_sample.csv',
+    #         mime='text/csv'
+    #     )
