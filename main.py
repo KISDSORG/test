@@ -27,8 +27,8 @@ if __name__ == '__main__':
     corp_nm = st.sidebar.text_input('발행사명', '삼성전자')
     start_dt = st.sidebar.date_input('시작일')
     end_dt = st.sidebar.date_input('종료일', min_value=start_dt)
-    intr_ex = st.sidebar.slider('표면이자율(%)', 0, 100)
-    intr_sf = st.sidebar.slider('만기이자율(%)', 0, 100)
+    intr_ex = st.sidebar.slider('표면이자율(%)', 0, 20)
+    intr_sf = st.sidebar.slider('만기이자율(%)', 0, 20)
 
     st.write('표면이자율: ', intr_ex, '%')
     st.write('만기이자율: ', intr_sf, '%') 
