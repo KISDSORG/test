@@ -1,11 +1,10 @@
 import pickle
-
 import streamlit as st
-import requests
-import zipfile
-import os
-import pandas as pd
-from bs4 import BeautifulSoup
+# import requests
+# import zipfile
+# import os
+# import pandas as pd
+# from bs4 import BeautifulSoup
 import warnings
 
 warnings.filterwarnings(action='ignore')
