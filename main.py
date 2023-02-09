@@ -20,7 +20,7 @@ st.set_page_config(layout='wide')
 
 if __name__ == '__main__':
 
-    knd = st.radio(
+    knd = st.sidebar.selectbox(
         '채권 종류', ('전환사채권', '신주인수권부사채권', '교환사채권')
     )
 
