@@ -1,10 +1,7 @@
 import pickle
 import streamlit as st
-# import requests
-# import zipfile
-# import os
-# import pandas as pd
-# from bs4 import BeautifulSoup
+import os
+import pandas as pd
 import warnings
 
 warnings.filterwarnings(action='ignore')
@@ -14,13 +11,14 @@ headers= {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5
 st.set_page_config(layout='wide')
 
 
-# def convert_df(df):
-#     return df.to_csv().encode('utf-8-sig')
+def convert_df(df):
+    return df.to_csv().encode('utf-8-sig')
 
 
-def get_data():
+def get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf):
     with open('./주식연계채권_최종.pkl', 'rb') as f:
         df = pickle.load(f)
+        df = df[df['종류']==knd]
 
     return df
 
@@ -48,19 +46,18 @@ if __name__ == '__main__':
     else:
         st.write("You selected 교환사채권")
 
-    df = get_data()
+    df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
     st.dataframe(df)
 
-    # button 생성하기
-    # if st.button('조회'):
-    #     df = get_corp_code(corp, start, end)
-    #     st.dataframe(df)
-    #
-    #     csv = convert_df(df)
-    #
-    #     st.download_button(
-    #         label="Download",
-    #         data=csv,
-    #         file_name='st_sample.csv',
-    #         mime='text/csv'
-    #     )
+    if st.button('조회'):
+        df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
+        st.dataframe(df)
+
+        csv = convert_df(df)
+
+        st.download_button(
+            label="Download",
+            data=csv,
+            file_name='mezzanine.csv',
+            mime='text/csv'
+        )
