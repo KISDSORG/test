@@ -12,15 +12,13 @@ headers= {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5
           'Accept-Encoding': '*', 'Connection': 'keep-alive'}
 st.set_page_config(layout='wide')
 
-
-
 # def convert_df(df):
 #     return df.to_csv().encode('utf-8-sig')
 
 
 if __name__ == '__main__':
 
-    knd = st.sidebar.selectbox(
+    knd = st.sidebar.multiselect(
         '채권 종류', ('전환사채권', '신주인수권부사채권', '교환사채권')
     )
 
