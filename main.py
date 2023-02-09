@@ -17,6 +17,8 @@ st.set_page_config(layout='wide')
 
 
 if __name__ == '__main__':
+          
+    st.sidebar.title('주식연계채권 발행내역')
 
     knd = st.sidebar.multiselect(
         '채권 종류', ('전환사채권', '신주인수권부사채권', '교환사채권')
