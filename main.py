@@ -23,6 +23,10 @@ if __name__ == '__main__':
     knd = st.sidebar.multiselect(
         '채권 종류', ('전환사채권', '신주인수권부사채권', '교환사채권')
     )
+          
+    corp_nm = st.sidebar.text_input('발행사명', '삼성전자')
+    start_dt = st.sidebar.date_input('시작일')
+    end_dt = st.sidebar.date_input('종료일', min_value=start_dt)      
 
     if knd == '전환사채권':
         st.write('You selected 전환사채권')
