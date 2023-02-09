@@ -46,8 +46,8 @@ if __name__ == '__main__':
     else:
         st.write("You selected 교환사채권")
 
-    df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
-    st.dataframe(df)
+#     df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
+#     st.dataframe(df)
 
     if st.sidebar.button('조회'):
         df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
