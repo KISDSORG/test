@@ -18,7 +18,7 @@ def convert_df(df):
 def get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf):
     with open('./주식연계채권_최종.pkl', 'rb') as f:
         df = pickle.load(f)
-        df = df[df['종류']==knd]
+#         df = df[df['종류']==knd]
 
     return df
 
@@ -46,18 +46,27 @@ if __name__ == '__main__':
     else:
         st.write("You selected 교환사채권")
 
-#     df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
-#     st.dataframe(df)
+    df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
+    st.dataframe(df)
 
-    if st.sidebar.button('조회'):
-        df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
-        st.dataframe(df)
+    csv = convert_df(df)
 
-        csv = convert_df(df)
+    st.download_button(
+        label="Download",
+        data=csv,
+        file_name='mezzanine.csv',
+        mime='text/csv'
+    )
 
-        st.download_button(
-            label="Download",
-            data=csv,
-            file_name='mezzanine.csv',
-            mime='text/csv'
-        )
+#     if st.sidebar.button('조회'):
+#         df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
+#         st.dataframe(df)
+
+#         csv = convert_df(df)
+
+#         st.download_button(
+#             label="Download",
+#             data=csv,
+#             file_name='mezzanine.csv',
+#             mime='text/csv'
+#         )
