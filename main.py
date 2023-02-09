@@ -18,7 +18,8 @@ def convert_df(df):
 def get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf):
     with open('./주식연계채권_최종.pkl', 'rb') as f:
         df = pickle.load(f)
-#         df = df[df['종류']==knd]
+        # df = df[df['종류']==knd]
+        df = df[df['공시일']>=start_dt]
 
     return df
 
@@ -33,40 +34,24 @@ if __name__ == '__main__':
     corp_nm = st.sidebar.text_input('발행사명', '삼성전자')
     start_dt = st.sidebar.date_input('시작일')
     end_dt = st.sidebar.date_input('종료일', min_value=start_dt)
-    intr_ex = st.sidebar.slider('표면이자율(%)', 0, 10)
-    intr_sf = st.sidebar.slider('만기이자율(%)', 0, 10)
+    intr_ex = st.sidebar.slider('표면이자율(%)', 0, 20)
+    intr_sf = st.sidebar.slider('만기이자율(%)', 0, 20)
 
     st.write('표면이자율: ', intr_ex, '%')
     st.write('만기이자율: ', intr_sf, '%')
 
-    if knd == '전환사채권':
-        st.write('You selected 전환사채권')
-    elif knd == '신주인수권부사채권':
-        st.write('You selected 신주인수권부사채권')
-    else:
-        st.write("You selected 교환사채권")
+    # df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
+    # st.dataframe(df)
 
-    df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
-    st.dataframe(df)
+    if st.sidebar.button('조회'):
+        df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
+        st.dataframe(df)
 
-    csv = convert_df(df)
+        csv = convert_df(df)
 
-    st.download_button(
-        label="Download",
-        data=csv,
-        file_name='mezzanine.csv',
-        mime='text/csv'
-    )
-
-#     if st.sidebar.button('조회'):
-#         df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
-#         st.dataframe(df)
-
-#         csv = convert_df(df)
-
-#         st.download_button(
-#             label="Download",
-#             data=csv,
-#             file_name='mezzanine.csv',
-#             mime='text/csv'
-#         )
+        st.download_button(
+            label="Download",
+            data=csv,
+            file_name='mezzanine.csv',
+            mime='text/csv'
+        )
