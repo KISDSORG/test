@@ -22,7 +22,7 @@ def get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf):
         df['발행사'] = df['발행사'].str.replace('주식회사', '').str.replace('(주)', '').str.replace('(', '').str.replace(')', '').str.strip()
         df = df[(df['공시일']>=start_dt.strftime('%Y%m%d'))&(df['공시일']<=end_dt.strftime('%Y%m%d'))
                 &(df['발행사']==corp_nm)
-                &(df['표면이자율(%)']<=int(intr_ex)) & (df['만기이자율(%)']<=int(intr_sf))]
+                &(df['표면이자율(%)'].astype(int)<=intr_ex) & (df['만기이자율(%)'].astype(int)<=intr_sf)]
 
     return df
 
