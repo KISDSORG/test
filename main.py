@@ -42,6 +42,8 @@ if __name__ == '__main__':
     st.write('표면이자율: ', intr_ex, '%')
     st.write('만기이자율: ', intr_sf, '%')
     st.write(knd)
+    st.write(type(knd))
+    st.write(k[1] for k in knd)
 
     # df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
     # st.dataframe(df)
