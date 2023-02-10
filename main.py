@@ -16,7 +16,6 @@ def convert_df(df):
 
 
 def get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf):
-    print("여기!", knd)
     with open('./주식연계채권_최종.pkl', 'rb') as f:
         df = pickle.load(f)
         # df = df[df['종류']==knd]
@@ -42,6 +41,7 @@ if __name__ == '__main__':
 
     st.write('표면이자율: ', intr_ex, '%')
     st.write('만기이자율: ', intr_sf, '%')
+    st.write(knd)
 
     # df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
     # st.dataframe(df)
