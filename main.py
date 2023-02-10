@@ -19,7 +19,7 @@ def get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf):
     with open('./주식연계채권_최종.pkl', 'rb') as f:
         df = pickle.load(f)
         # df = df[df['종류']==knd]
-        df = df[df['공시일']>=start_dt.strftime('%Y%m%d')]
+        df = df[(df['공시일']>=start_dt.strftime('%Y%m%d'))&(df['공시일']<=end_dt.strftime('%Y%m%d'))]
 
     return df
 
