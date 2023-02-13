@@ -49,9 +49,6 @@ if __name__ == '__main__':
     intr_ex = st.sidebar.slider('> 표면이자율(%)', 0, 20)
     intr_sf = st.sidebar.slider('> 만기이자율(%)', 0, 20)
 
-    st.write('표면이자율: ', intr_ex, '%')
-    st.write('만기이자율: ', intr_sf, '%')
-
     if st.sidebar.button('조회'):
         df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
         st.dataframe(df)
