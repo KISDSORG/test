@@ -6,3 +6,4 @@ beautifulsoup4==4.11.1
 lxml
 zipp==3.7.0
 Datetime==4.3
+urllib==1.24.3
