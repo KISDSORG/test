@@ -16,7 +16,7 @@ def convert_df(df):
 
 
 def get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf):
-    with open('./주식연계채권_최종.pkl', 'rb') as f:
+    with open('./Mezzanine_new.pkl', 'rb') as f:
         df = pickle.load(f)
         df = df[df['종류'].isin(knd)]
         df['표면이자율(%)'] = df['표면이자율(%)'].str.strip()
