@@ -9,6 +9,7 @@ import warnings
 import pickle
 import datetime
 from datetime import timedelta
+import time
 
 warnings.filterwarnings(action='ignore')
 API_KEY = 'd7d1be298b9cac1558eab570011f2bb40e2a6825'
@@ -126,6 +127,7 @@ if __name__ == '__main__':
     rcept_no_list = []
     for r in rcept_names:
         rcept_no_list.extend(get_rcept_no(r, bgn_de, end_de))
+        time.sleep(3)
 
     # 보고서 접수번호별 세부정보 추출
     rows = []
