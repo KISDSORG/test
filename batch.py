@@ -58,7 +58,7 @@ def get_rcept_no(report_nm, bgn_de, end_de):
 def get_corp_docu(rcept_no):
     url = 'https://opendart.fss.or.kr/api/document.xml'
     params = {'crtfc_key': API_KEY, 'rcept_no': rcept_no}
-    response = requests.get(url, params=params)
+    response = requests.get(url, params=params, headers=headers, verify=False)
 
     try:
         zf = zipfile.ZipFile(BytesIO(response.content))
