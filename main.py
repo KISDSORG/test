@@ -19,10 +19,14 @@ def get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf):
     with open('./주식연계채권_최종.pkl', 'rb') as f:
         df = pickle.load(f)
         df = df[df['종류'].isin(knd)]
-        df['발행사'] = df['발행사'].str.replace('주식회사', '').str.replace('(주)', '').str.replace('(', '').str.replace(')', '').str.strip()
-        df = df[(df['공시일']>=start_dt.strftime('%Y%m%d'))&(df['공시일']<=end_dt.strftime('%Y%m%d'))
-                &(df['발행사']==corp_nm)]
-                # &(df['표면이자율(%)'].astype(float)<=intr_ex) & (df['만기이자율(%)'].astype(float)<=intr_sf)] # '-'로 들어가 있는 부분 처리 필요
+        if corp_nm == '':
+            df = df[(df['공시일']>=start_dt.strftime('%Y%m%d'))&(df['공시일']<=end_dt.strftime('%Y%m%d'))]
+                    # &(df['표면이자율(%)'].astype(float)<=intr_ex) & (df['만기이자율(%)'].astype(float)<=intr_sf)] # '-'로 들어가 있는 부분 처리 필요
+        else:
+            df['발행사'] = df['발행사'].str.replace('주식회사', '').str.replace('(주)', '').str.replace('(', '').str.replace(')', '').str.strip()
+            df = df[(df['공시일']>=start_dt.strftime('%Y%m%d'))&(df['공시일']<=end_dt.strftime('%Y%m%d'))
+                    &(df['발행사']==corp_nm)]
+                    # &(df['표면이자율(%)'].astype(float)<=intr_ex) & (df['만기이자율(%)'].astype(float)<=intr_sf)] # '-'로 들어가 있는 부분 처리 필요
     return df
 
 
@@ -33,7 +37,7 @@ if __name__ == '__main__':
     knd = st.sidebar.multiselect(
         '채권 종류', ('전환사채권', '신주인수권부사채권', '교환사채권')
     )
-    corp_nm = st.sidebar.text_input('발행사명', '삼성전자')
+    corp_nm = st.sidebar.text_input('발행사명(전체 기업 검색 시 공란)', '삼성전자')
     start_dt = st.sidebar.date_input('시작일')
     end_dt = st.sidebar.date_input('종료일', min_value=start_dt)
     intr_ex = st.sidebar.slider('표면이자율(%)', 0, 20)
@@ -43,7 +47,6 @@ if __name__ == '__main__':
     st.write('만기이자율: ', intr_sf, '%')
     st.write(knd)
     st.write(type(knd))
-    st.write(k[1] for k in knd)
 
     # df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
     # st.dataframe(df)
