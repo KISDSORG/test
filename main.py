@@ -18,7 +18,6 @@ def convert_df(df):
 def get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf):
     with open('./주식연계채권_최종.pkl', 'rb') as f:
         df = pickle.load(f)
-        df = df.reset_index(drop=True)
         df = df[df['종류'].isin(knd)]
         df['표면이자율(%)'] = df['표면이자율(%)'].str.strip()
         df['만기이자율(%)'] = df['만기이자율(%)'].str.strip()
@@ -33,6 +32,7 @@ def get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf):
                     &(df['발행사']==corp_nm)]
         df.loc[df['표면이자율(%)'] == -1000, '표면이자율(%)'] = '-'
         df.loc[df['만기이자율(%)'] == -1000, '만기이자율(%)'] = '-'
+        df = df.reset_index(drop=True)
     return df
 
 
