@@ -123,7 +123,7 @@ def get_corp_docu(rcept_no):
     return row
 
 if __name__ == '__main__':
-    rcept_names = ['주요사항보고서(전환사채권발행결정)', '주요사항보고서(신주인수권부사채권발행결정)', '주요사항보고서(교환사채권발행결정)']
+    rcept_names = ['주요사항보고서(전환사채권발행결정)'] #, '주요사항보고서(신주인수권부사채권발행결정)', '주요사항보고서(교환사채권발행결정)']
     rcept_no_list = []
     for r in rcept_names:
         rcept_no_list.extend(get_rcept_no(r, bgn_de, end_de))
