@@ -39,6 +39,8 @@ def get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf):
 if __name__ == '__main__':
 
     st.sidebar.title('주식연계채권 발행내역')
+    
+    st.markdown(".stTextInput>label{font-weight:bold}")
 
     knd = st.sidebar.multiselect(
         '> 채권 종류', ('전환사채권', '신주인수권부사채권', '교환사채권')
@@ -51,9 +53,6 @@ if __name__ == '__main__':
 
     st.write('표면이자율: ', intr_ex, '%')
     st.write('만기이자율: ', intr_sf, '%')
-
-    # df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
-    # st.dataframe(df)
 
     if st.sidebar.button('조회'):
         df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
