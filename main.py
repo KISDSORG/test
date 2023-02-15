@@ -51,6 +51,8 @@ if __name__ == '__main__':
 
     if st.sidebar.button('조회'):
         df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
+        # 총 조회 건수
+        st.text("총 ", df.shape[0], "건")
         st.dataframe(df)
 
         csv = convert_df(df)
