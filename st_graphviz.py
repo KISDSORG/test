@@ -1,7 +1,6 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
 import pandas as pd
-import openpyxl
 import graphviz
 import matplotlib.font_manager as fm
 from matplotlib import rc
