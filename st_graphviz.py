@@ -11,7 +11,7 @@ rc('font', family=font_name)
 with st.sidebar:
     selected = option_menu("Menu", ["주식연계채권", "기업지배구조"],
                          icons=['house', 'kanban'],
-                         menu_icon='app-indicator', default_index=0)
+                         menu_icon='app-indicator', default_index=0, orientation='horizontal')
 
 if selected == "주식연계채권":
     st.write("주식연계채권 페이지")
