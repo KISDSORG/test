@@ -8,3 +8,5 @@ lxml
 zipp==3.7.0
 Datetime==4.3
 urllib3==1.26.14
+graphviz
+matplotlib==3.5.1
