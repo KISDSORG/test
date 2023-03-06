@@ -7,8 +7,6 @@ import matplotlib.font_manager as fm
 from matplotlib import rc
 import pickle
 import warnings
-from pathlib import Path
-import os
 
 # 폰트 관련 세팅
 font_name = fm.FontProperties(fname='./malgun.ttf').get_name()
@@ -115,6 +113,3 @@ else:
 
         st.subheader('[지배구조]')
         st.graphviz_chart(f)
-
-        download_path = str(os.path.join(Path.home(), "Downloads"))
-        f.render(filename='corp_tree', directory=download_path, format='png')
