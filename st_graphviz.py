@@ -7,6 +7,8 @@ import matplotlib.font_manager as fm
 from matplotlib import rc
 import pickle
 import warnings
+from pathlib import Path
+import os
 
 # 폰트 관련 세팅
 font_name = fm.FontProperties(fname='./malgun.ttf').get_name()
@@ -61,9 +63,10 @@ if selected == "주식연계채권":
     end_dt = st.sidebar.date_input('> 종료일', min_value=start_dt)
     intr_ex = st.sidebar.slider('> 표면이자율(%)', 0, 20)
     intr_sf = st.sidebar.slider('> 만기이자율(%)', 0, 20)
+    st.title('주식연계채권 발행내역')
 
     if st.sidebar.button('조회'):
-        st.title('주식연계채권 발행내역')
+        
         df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
         # 총 조회 건수
         row_cnt = "총 " + str(df.shape[0]) + "건"
@@ -80,6 +83,7 @@ if selected == "주식연계채권":
         )
 
 else:
+    st.title("기업 지배구조")
     uploaded_file = st.file_uploader("계통도 데이터를 업로드 해주세요(확장자:xlsx)", type='xlsx', key="file")
 
     if uploaded_file is not None:
@@ -113,3 +117,6 @@ else:
 
         st.subheader('[지배구조]')
         st.graphviz_chart(f)
+
+        download_path = str(os.path.join(Path.home(), "Downloads"))
+        f.render(filename='corp_tree', directory=download_path, format='png')
