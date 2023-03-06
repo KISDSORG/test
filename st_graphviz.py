@@ -20,11 +20,6 @@ headers = {
     'Accept-Encoding': '*', 'Connection': 'keep-alive'}
 st.set_page_config(layout='wide')
 
-# with st.sidebar:
-#     selected = option_menu("Menu", ["주식연계채권", "기업지배구조"],
-#                            icons=['house', 'kanban'],
-#                            menu_icon='app-indicator', default_index=0)
-
 def convert_df(df):
     return df.to_csv().encode('utf-8-sig')
 
@@ -49,7 +44,7 @@ def get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf):
         df = df.reset_index(drop=True)
     return df
 
-tab1, tab2 = st.tabs("주식연계채권", "기업지배구조")
+tab1, tab2 = st.tabs(["주식연계채권", "기업지배구조"])
 
 tab1.sidebar.title('주식연계채권 발행내역')
 
