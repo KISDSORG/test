@@ -1,6 +1,7 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
 import pandas as pd
+import openpyxl
 import graphviz
 import matplotlib.font_manager as fm
 from matplotlib import rc
@@ -16,12 +17,12 @@ with st.sidebar:
 if selected == "주식연계채권":
     st.write("주식연계채권 페이지")
 else:
-    uploaded_file = st.file_uploader("계통도 데이터를 업로드 해주세요.", type='xlsx', key="file")
+    uploaded_file = st.file_uploader("계통도 데이터를 업로드 해주세요(확장자:xlsx)", type='xlsx', key="file")
 
     if uploaded_file is not None:
 
         df = pd.read_excel(uploaded_file)
-        st.dataframe(df)
+        # st.dataframe(df)
 
         df = df.fillna(0)
         df = df.rename(columns={'Unnamed: 0': '모회사'})
@@ -47,4 +48,5 @@ else:
             print(row['모회사'], row['자회사'])
             f.edge(row['모회사'], row['자회사'], label=row['지분'])
 
+        st.write('[지배구조]')
         st.graphviz_chart(f)
