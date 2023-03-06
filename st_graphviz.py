@@ -8,6 +8,7 @@ from matplotlib import rc
 import pickle
 import warnings
 from pathlib import Path
+import os
 
 # 폰트 관련 세팅
 font_name = fm.FontProperties(fname='./malgun.ttf').get_name()
@@ -109,11 +110,11 @@ else:
             f.node(c, c)
 
         for idx, row in df_pivot.iterrows():
-#             print(row['모회사'], row['자회사'])
+            # print(row['모회사'], row['자회사'])
             f.edge(row['모회사'], row['자회사'], label=row['지분'])
 
         st.subheader('[지배구조]')
         st.graphviz_chart(f)
 
-        download_path = str(Path.home()/"Downloads")
+        download_path = str(os.path.join(Path.home(), "Downloads"))
         f.render(filename='corp_tree', directory=download_path, format='png')
