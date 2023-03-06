@@ -20,6 +20,11 @@ headers = {
     'Accept-Encoding': '*', 'Connection': 'keep-alive'}
 st.set_page_config(layout='wide')
 
+with st.sidebar:
+    selected = option_menu("Menu", ["주식연계채권", "기업지배구조"],
+                           icons=['house', 'kanban'],
+                           menu_icon='app-indicator', default_index=0)
+
 def convert_df(df):
     return df.to_csv().encode('utf-8-sig')
 
@@ -44,31 +49,66 @@ def get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf):
         df = df.reset_index(drop=True)
     return df
 
-tab1, tab2 = st.tabs(["주식연계채권", "기업지배구조"])
 
-tab1.sidebar.title('주식연계채권 발행내역')
+if selected == "주식연계채권":
+    st.sidebar.title('주식연계채권 발행내역')
 
-knd = tab1.sidebar.multiselect(
-    '> 채권 종류', ('전환사채권', '신주인수권부사채권', '교환사채권')
-)
-corp_nm = tab1.sidebar.text_input('> 발행사명(전체 기업 검색 시 공란)', '삼성전자')
-start_dt = tab1.sidebar.date_input('> 시작일')
-end_dt = tab1.sidebar.date_input('> 종료일', min_value=start_dt)
-intr_ex = tab1.sidebar.slider('> 표면이자율(%)', 0, 20)
-intr_sf = tab1.sidebar.slider('> 만기이자율(%)', 0, 20)
-
-if tab1.sidebar.button('조회'):
-    df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
-    # 총 조회 건수
-    row_cnt = "총 " + str(df.shape[0]) + "건"
-    tab1.text(row_cnt)
-    tab1.dataframe(df)
-
-    csv = convert_df(df)
-
-    tab1.download_button(
-        label="Download",
-        data=csv,
-        file_name='mezzanine.csv',
-        mime='text/csv'
+    knd = st.sidebar.multiselect(
+        '> 채권 종류', ('전환사채권', '신주인수권부사채권', '교환사채권')
     )
+    corp_nm = st.sidebar.text_input('> 발행사명(전체 기업 검색 시 공란)', '삼성전자')
+    start_dt = st.sidebar.date_input('> 시작일')
+    end_dt = st.sidebar.date_input('> 종료일', min_value=start_dt)
+    intr_ex = st.sidebar.slider('> 표면이자율(%)', 0, 20)
+    intr_sf = st.sidebar.slider('> 만기이자율(%)', 0, 20)
+
+    if st.sidebar.button('조회'):
+        df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
+        # 총 조회 건수
+        row_cnt = "총 " + str(df.shape[0]) + "건"
+        st.text(row_cnt)
+        st.dataframe(df)
+
+        csv = convert_df(df)
+
+        st.download_button(
+            label="Download",
+            data=csv,
+            file_name='mezzanine.csv',
+            mime='text/csv'
+        )
+
+else:
+    uploaded_file = st.file_uploader("계통도 데이터를 업로드 해주세요(확장자:xlsx)", type='xlsx', key="file")
+
+    if uploaded_file is not None:
+
+        df = pd.read_excel(uploaded_file)
+        # st.dataframe(df)
+
+        df = df.fillna(0)
+        df = df.rename(columns={'Unnamed: 0': '모회사'})
+        df.set_index('모회사', inplace=True)
+
+        df_pivot = df.reset_index().melt(id_vars='모회사')
+        df_pivot = df_pivot[df_pivot['value'] > 0]
+        df_pivot.rename(columns={'variable': '자회사', 'value': '지분'}, inplace=True)
+        df_pivot = df_pivot.astype({'지분': 'string'})
+
+        # 모회사, 자회사 중복 없이 저장
+        corp = []
+        for index, row in df_pivot.iterrows():
+            corp.append(row[0])
+            corp.append(row[1])
+        corp = set(corp)
+
+        f = graphviz.Digraph('round-table', comment='The Round Table')
+        for c in corp:
+            f.node(c, c)
+
+        for idx, row in df_pivot.iterrows():
+            print(row['모회사'], row['자회사'])
+            f.edge(row['모회사'], row['자회사'], label=row['지분'])
+
+        st.write('[지배구조]')
+        st.graphviz_chart(f)
