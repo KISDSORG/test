@@ -113,3 +113,10 @@ else:
 
         st.subheader('[지배구조]')
         st.graphviz_chart(f)
+        
+        st.download_button(
+            label="Download",
+            data=f,
+            file_name='corp_tree.png',
+            mime='image/png'
+        )
