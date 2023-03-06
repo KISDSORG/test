@@ -16,7 +16,7 @@ with st.sidebar:
 if selected == "주식연계채권":
     st.write("주식연계채권 페이지")
 else:
-    uploaded_file = st.file_uploader("Choose a file", type='xlsx', key="file")
+    uploaded_file = st.file_uploader("계통도 데이터를 업로드 해주세요.", type='xlsx', key="file")
 
     if uploaded_file is not None:
 
