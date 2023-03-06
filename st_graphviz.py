@@ -51,7 +51,7 @@ def get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf):
 
 
 if selected == "주식연계채권":
-    st.sidebar.title('주식연계채권 발행내역')
+    # st.sidebar.title('주식연계채권 발행내역')
 
     knd = st.sidebar.multiselect(
         '> 채권 종류', ('전환사채권', '신주인수권부사채권', '교환사채권')
@@ -63,6 +63,7 @@ if selected == "주식연계채권":
     intr_sf = st.sidebar.slider('> 만기이자율(%)', 0, 20)
 
     if st.sidebar.button('조회'):
+        st.title('주식연계채권 발행내역')
         df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
         # 총 조회 건수
         row_cnt = "총 " + str(df.shape[0]) + "건"
