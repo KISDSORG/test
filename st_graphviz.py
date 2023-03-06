@@ -109,7 +109,7 @@ else:
             f.node(c, c)
 
         for idx, row in df_pivot.iterrows():
-            print(row['모회사'], row['자회사'])
+#             print(row['모회사'], row['자회사'])
             f.edge(row['모회사'], row['자회사'], label=row['지분'])
 
         st.subheader('[지배구조]')
