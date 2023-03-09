@@ -23,7 +23,7 @@ headers = {
 st.set_page_config(layout='wide')
 
 selected = option_menu(None, ["주식연계채권", "기업지배구조", "Today News"],
-                        icons=['card-list', 'diagram-3', "envelope-paper-heart"],
+                        icons=['card-list', 'diagram-3', "envelope-open"],
                         menu_icon="cast", default_index=0, orientation="horizontal")
 def convert_df(df):
     return df.to_csv().encode('utf-8-sig')
