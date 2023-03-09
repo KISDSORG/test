@@ -9,7 +9,6 @@ import pickle
 import warnings
 from pathlib import Path
 import os
-import hydralit_components as hc
 
 # 폰트 관련 세팅
 font_name = fm.FontProperties(fname='./malgun.ttf').get_name()
@@ -22,13 +21,6 @@ headers = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36',
     'Accept-Encoding': '*', 'Connection': 'keep-alive'}
 st.set_page_config(layout='wide')
-
-option_data = [
-   {'icon': "bi bi-hand-thumbs-up", 'label':"Agree"},
-   {'icon':"fa fa-question-circle",'label':"Unsure"},
-   {'icon': "bi bi-hand-thumbs-down", 'label':"Disagree"},
-]
-nav = hc.option_bar(option_definition=option_data, horizontal_orientation=True)
 
 selected = option_menu(None, ["주식연계채권", "기업지배구조", "Today News"],
                         icons=['card-list', 'diagram-3', "envelope-open"],
