@@ -9,6 +9,7 @@ import pickle
 import warnings
 from pathlib import Path
 import os
+import hydralit_components as hc
 
 # 폰트 관련 세팅
 font_name = fm.FontProperties(fname='./malgun.ttf').get_name()
