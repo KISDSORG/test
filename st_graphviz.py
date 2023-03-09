@@ -22,8 +22,8 @@ headers = {
     'Accept-Encoding': '*', 'Connection': 'keep-alive'}
 st.set_page_config(layout='wide')
 
-selected2 = option_menu(None, ["Home", "Upload", "Tasks", 'Settings'], 
-    icons=['house', 'cloud-upload', "list-task", 'gear'], 
+selected2 = option_menu(None, ["주식연계채권", "기업지배구조", "Today News"], 
+    icons=['house', 'cloud-upload', "list-task"], 
     menu_icon="cast", default_index=0, orientation="horizontal")
 selected2
 
