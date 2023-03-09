@@ -88,7 +88,7 @@ if selected == "주식연계채권":
         )
 
 else:
-    st.headera("기업 지배구조")
+    st.header("기업 지배구조")
     uploaded_file = st.file_uploader("계통도 데이터를 업로드 해주세요(확장자:xlsx)", type='xlsx', key="file")
 
     if uploaded_file is not None:
