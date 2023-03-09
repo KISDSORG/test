@@ -67,7 +67,7 @@ if selected == "주식연계채권":
     intr_ex_min = st.sidebar.number_input('>표면이자율(%)', key='intr_ex_min')
     intr_ex_max = st.sidebar.number_input('~', key='intr_ex_max')
     intr_sf_min = st.sidebar.number_input('>만기이자율(%)', key='intr_sf_min')
-    intr_sf_max = st.sidebar.number_input('~', 'intr_sf_max')
+    intr_sf_max = st.sidebar.number_input('~', key='intr_sf_max')
     st.header('주식연계채권 발행내역')
 
     if st.sidebar.button('조회'):
