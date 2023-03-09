@@ -30,7 +30,7 @@ with st.sidebar:
 def convert_df(df):
     return df.to_csv().encode('utf-8-sig')
 
-def get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf):
+def get_data(knd, corp_nm, start_dt, end_dt, intr_ex_min, intr_ex_max, intr_sf_min, intr_sf_max):
     with open('./Mezzanine_new.pkl', 'rb') as f:
         df = pickle.load(f)
         df = df[df['종류'].isin(knd)]
@@ -38,7 +38,8 @@ def get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf):
         df['만기이자율(%)'] = df['만기이자율(%)'].str.strip()
         df.loc[df['표면이자율(%)'] == '-', '표면이자율(%)'] = -1000
         df.loc[df['만기이자율(%)'] == '-', '만기이자율(%)'] = -1000
-        df = df[(df['표면이자율(%)'].astype(float) <= intr_ex) & (df['만기이자율(%)'].astype(float) <= intr_sf)]
+        df = df[(df['표면이자율(%)'].astype(float) >= intr_ex_min) & (df['표면이자율(%)'].astype(float) <= intr_ex_max) 
+                & (df['만기이자율(%)'].astype(float) >= intr_sf_min) & (df['만기이자율(%)'].astype(float) <= intr_sf_max)]
         if corp_nm == '':
             df = df[(df['공시일'] >= start_dt.strftime('%Y%m%d')) & (df['공시일'] <= end_dt.strftime('%Y%m%d'))]
         else:
@@ -61,13 +62,17 @@ if selected == "주식연계채권":
     corp_nm = st.sidebar.text_input('> 발행사명(전체 기업 검색 시 공란)', '삼성전자')
     start_dt = st.sidebar.date_input('> 시작일')
     end_dt = st.sidebar.date_input('> 종료일', min_value=start_dt)
-    intr_ex = st.sidebar.slider('> 표면이자율(%)', 0, 20)
-    intr_sf = st.sidebar.slider('> 만기이자율(%)', 0, 20)
+    # intr_ex = st.sidebar.slider('> 표면이자율(%)', 0, 20)
+    # intr_sf = st.sidebar.slider('> 만기이자율(%)', 0, 20)
+    intr_ex_min = st.sidebar.number_input('>표면이자율(%)')
+    intr_ex_max = st.sidebar.number_input('~')
+    intr_sf_min = st.sidebar.number_input('>만기이자율(%)')
+    intr_sf_max = st.sidebar.number_input('~')
     st.header('주식연계채권 발행내역')
 
     if st.sidebar.button('조회'):
-        
-        df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex, intr_sf)
+
+        df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex_min, intr_sf_max, intr_sf_min, intr_sf_max)
         # 총 조회 건수
         row_cnt = "총 " + str(df.shape[0]) + "건"
         st.text(row_cnt)
@@ -83,8 +88,8 @@ if selected == "주식연계채권":
         )
 
 else:
-    st.header("기업 지배구조")
-    uploaded_file = st.file_uploader("계통도 데이터를 업로드 해주세요(파일 확장자: xlsx)", type='xlsx', key="file")
+    st.headera("기업 지배구조")
+    uploaded_file = st.file_uploader("계통도 데이터를 업로드 해주세요(확장자:xlsx)", type='xlsx', key="file")
 
     if uploaded_file is not None:
 
@@ -118,5 +123,5 @@ else:
         st.subheader('[지배구조]')
         st.graphviz_chart(f)
 
-#         download_path = str(os.path.join(Path.home(), "Downloads"))
-#         f.render(filename='corp_tree', directory=download_path, format='png')
+        download_path = str(os.path.join(Path.home(), "Downloads"))
+        f.render(filename='corp_tree', directory=download_path, format='png')
