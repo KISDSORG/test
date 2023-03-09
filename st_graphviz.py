@@ -22,13 +22,16 @@ headers = {
     'Accept-Encoding': '*', 'Connection': 'keep-alive'}
 st.set_page_config(layout='wide')
 
-selected = option_menu(None, ["주식연계채권", "기업지배구조", "Today News"],
-                        icons=['card-list', 'diagram-3', "envelope-open"],
-                        menu_icon="cast", default_index=0, orientation="horizontal")
+# 화면
+with st.sidebar:
+    selected = option_menu("Menu", ["주식연계채권", "기업지배구조"],
+                           icons=['card-list', 'diagram-3'],
+                           menu_icon='cast', default_index=0)
+
 def convert_df(df):
     return df.to_csv().encode('utf-8-sig')
 
-def get_data(knd, corp_nm, start_dt, end_dt, intr_ex_min, intr_ex_max, intr_sf_min, intr_sf_max):
+def get_data(knd, corp_nm, start_dt, end_dt, intr_ex_range, intr_sf_range):
     with open('./Mezzanine_new.pkl', 'rb') as f:
         df = pickle.load(f)
         df = df[df['종류'].isin(knd)]
@@ -36,8 +39,8 @@ def get_data(knd, corp_nm, start_dt, end_dt, intr_ex_min, intr_ex_max, intr_sf_m
         df['만기이자율(%)'] = df['만기이자율(%)'].str.strip()
         df.loc[df['표면이자율(%)'] == '-', '표면이자율(%)'] = -1000
         df.loc[df['만기이자율(%)'] == '-', '만기이자율(%)'] = -1000
-        df = df[(df['표면이자율(%)'].astype(float) >= intr_ex_min) & (df['표면이자율(%)'].astype(float) <= intr_ex_max)
-                & (df['만기이자율(%)'].astype(float) >= intr_sf_min) & (df['만기이자율(%)'].astype(float) <= intr_sf_max)]
+        df = df[(df['표면이자율(%)'].astype(float) >= intr_ex_range[0]) & (df['표면이자율(%)'].astype(float) <= intr_ex_range[1])
+                & (df['만기이자율(%)'].astype(float) >= intr_sf_range[0]) & (df['만기이자율(%)'].astype(float) <= intr_sf_range[1])]
         if corp_nm == '':
             df = df[(df['공시일'] >= start_dt.strftime('%Y%m%d')) & (df['공시일'] <= end_dt.strftime('%Y%m%d'))]
         else:
@@ -53,37 +56,32 @@ def get_data(knd, corp_nm, start_dt, end_dt, intr_ex_min, intr_ex_max, intr_sf_m
 
 if selected == "주식연계채권":
     # st.sidebar.title('주식연계채권 발행내역')
-
-    knd = st.sidebar.multiselect(
-        '> 채권 종류', ('전환사채권', '신주인수권부사채권', '교환사채권')
-    )
-    corp_nm = st.sidebar.text_input('> 발행사명(전체 기업 검색 시 공란)', '삼성전자')
-    start_dt = st.sidebar.date_input('> 시작일')
-    end_dt = st.sidebar.date_input('> 종료일', min_value=start_dt)
-    # intr_ex = st.sidebar.slider('> 표면이자율(%)', 0, 20)
-    # intr_sf = st.sidebar.slider('> 만기이자율(%)', 0, 20)
-    intr_ex_min = st.sidebar.number_input('>표면이자율(%)', key='intr_ex_min')
-    intr_ex_max = st.sidebar.number_input('~', key='intr_ex_max')
-    intr_sf_min = st.sidebar.number_input('>만기이자율(%)', key='intr_sf_min')
-    intr_sf_max = st.sidebar.number_input('~', key='intr_sf_max')
-    st.header('주식연계채권 발행내역')
-
-    if st.sidebar.button('조회'):
-
-        df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex_min, intr_ex_max, intr_sf_min, intr_sf_max)
-        # 총 조회 건수
-        row_cnt = "총 " + str(df.shape[0]) + "건"
-        st.text(row_cnt)
-        st.dataframe(df)
-
-        csv = convert_df(df)
-
-        st.download_button(
-            label="Download",
-            data=csv,
-            file_name='mezzanine.csv',
-            mime='text/csv'
-        )
+    
+    with st.container():
+        st.header('주식연계채권 발행내역')
+        knd = st.multiselect('> 채권 종류', ('전환사채권', '신주인수권부사채권', '교환사채권'))
+        corp_nm = st.text_input('> 발행사명(전체 기업 검색 시 공란)', '삼성전자')
+        start_dt = st.date_input('> 시작일')
+        end_dt = st.date_input('> 종료일', min_value=start_dt)
+        intr_ex_range = st.slider('> 표면이자율(%)', 0, 100, (0, 10))
+        intr_sf_range = st.slider('> 만기이자율(%)', 0, 100, (0, 10))
+    
+        if st.button('조회'):
+    
+            df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex_range, intr_sf_range)
+            # 총 조회 건수
+            row_cnt = "총 " + str(df.shape[0]) + "건"
+            st.text(row_cnt)
+            st.dataframe(df)
+    
+            csv = convert_df(df)
+    
+            st.download_button(
+                label="Download",
+                data=csv,
+                file_name='mezzanine.csv',
+                mime='text/csv'
+            )
 
 else:
     st.header("기업 지배구조")
