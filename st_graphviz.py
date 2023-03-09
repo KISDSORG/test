@@ -72,7 +72,7 @@ if selected == "주식연계채권":
 
     if st.sidebar.button('조회'):
 
-        df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex_min, intr_sf_max, intr_sf_min, intr_sf_max)
+        df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex_min, intr_ex_max, intr_sf_min, intr_sf_max)
         # 총 조회 건수
         row_cnt = "총 " + str(df.shape[0]) + "건"
         st.text(row_cnt)
