@@ -22,6 +22,13 @@ headers = {
     'Accept-Encoding': '*', 'Connection': 'keep-alive'}
 st.set_page_config(layout='wide')
 
+option_data = [
+   {'icon': "bi bi-hand-thumbs-up", 'label':"Agree"},
+   {'icon':"fa fa-question-circle",'label':"Unsure"},
+   {'icon': "bi bi-hand-thumbs-down", 'label':"Disagree"},
+]
+nav = hc.option_bar(option_definition=option_data, horizontal_orientation=True)
+
 selected = option_menu(None, ["주식연계채권", "기업지배구조", "Today News"],
                         icons=['card-list', 'diagram-3', "envelope-open"],
                         menu_icon="cast", default_index=0, orientation="horizontal")
