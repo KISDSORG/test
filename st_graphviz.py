@@ -57,7 +57,7 @@ def get_data(knd, corp_nm, start_dt, end_dt, intr_ex_range, intr_sf_range):
 if selected == "주식연계채권":
 
     st.header('주식연계채권 발행내역')
-    with st.form(clear_on_submit=True):
+    with st.form(key='form1', clear_on_submit=True):
         knd = st.multiselect('> 채권 종류', ('전환사채권', '신주인수권부사채권', '교환사채권'))
         corp_nm = st.text_input('> 발행사명(전체 기업 검색 시 공란)', '삼성전자')
         start_dt = st.date_input('> 시작일')
