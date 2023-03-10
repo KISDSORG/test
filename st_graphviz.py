@@ -59,11 +59,18 @@ if selected == "주식연계채권":
     st.header('주식연계채권 발행내역')
     with st.form(key='form1', clear_on_submit=True):
         knd = st.multiselect('> 채권 종류', ('전환사채권', '신주인수권부사채권', '교환사채권'))
-        corp_nm = st.text_input('> 발행사명(전체 기업 검색 시 공란)', '삼성전자')
-        start_dt = st.date_input('> 시작일')
-        end_dt = st.date_input('> 종료일', min_value=start_dt)
-        intr_ex_range = st.slider('> 표면이자율(%)', 0, 50, (0, 10))
-        intr_sf_range = st.slider('> 만기이자율(%)', 0, 50, (0, 10))
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            corp_nm = st.text_input('> 발행사명(전체 기업 검색 시 공란)', '삼성전자')
+        with c2:
+            start_dt = st.date_input('> 시작일')
+        with c3:
+            end_dt = st.date_input('> 종료일', min_value=start_dt)
+        c4, c5 = st.columns(2)
+        with c4: 
+            intr_ex_range = st.slider('> 표면이자율(%)', 0, 50, (0, 10))
+        with c5:
+            intr_sf_range = st.slider('> 만기이자율(%)', 0, 50, (0, 10))
 
         if st.form_submit_button('조회'):
 
