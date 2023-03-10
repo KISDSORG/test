@@ -94,8 +94,8 @@ else:
     st.header("기업 지배구조")
     uploaded_file = st.file_uploader("지배구조 데이터를 업로드 해주세요(확장자:xlsx)", type='xlsx', key="file")
     # 샘플 파일 다운로드
-    with open('./sample.xlsx', encoding='utf-8-sig') as f:
-        st.download_button('Sample Input File Download', f)
+    with open('./sample.xlsx', 'rb') as f:
+        st.download_button('Sample Input File Download', f, file_name='sample.xlsx')
 
     if uploaded_file is not None:
 
