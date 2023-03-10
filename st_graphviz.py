@@ -125,6 +125,3 @@ else:
 
         st.subheader('[지배구조]')
         st.graphviz_chart(f)
-
-        download_path = str(os.path.join(Path.home(), "Downloads"))
-        f.render(filename='corp_tree', directory=download_path, format='png')
