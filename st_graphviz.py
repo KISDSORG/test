@@ -90,6 +90,8 @@ if selected == "주식연계채권":
             mime='text/csv'
         )
     st.markdown(".stTextInput > label {font-weight:bold;}", unsafe_allow_html=True)
+    st.markdown(".stTextInput > label {font-size:105%; font-weight:bold; color:blue;} ",
+                unsafe_allow_html=True)  # for all text-input label sections
 
 else:
     st.header("기업 지배구조")
