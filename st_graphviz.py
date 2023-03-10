@@ -74,6 +74,15 @@ if selected == "주식연계채권":
 
         form1_bt = st.form_submit_button('조회')
 
+        st.markdown(
+            """
+            <style>
+            input{
+                font-weight: bold;
+                }
+            </style>
+            """, unsafe_allow_html=True)
+
     if form1_bt:
         df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex_range, intr_sf_range)
         # 총 조회 건수
@@ -89,14 +98,6 @@ if selected == "주식연계채권":
             file_name='mezzanine.csv',
             mime='text/csv'
         )
-    st.markdown(
-        """
-        <style>
-        input{
-            font-weight: bold;
-            }
-        </style>
-        """, unsafe_allow_html=True)
 
 else:
     st.header("기업 지배구조")
