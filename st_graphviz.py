@@ -56,26 +56,26 @@ def get_data(knd, corp_nm, start_dt, end_dt, intr_ex_range, intr_sf_range):
 
 if selected == "주식연계채권":
     # st.sidebar.title('주식연계채권 발행내역')
-    
-    with st.container():
+
+    with st.form:
         st.header('주식연계채권 발행내역')
         knd = st.multiselect('> 채권 종류', ('전환사채권', '신주인수권부사채권', '교환사채권'))
         corp_nm = st.text_input('> 발행사명(전체 기업 검색 시 공란)', '삼성전자')
         start_dt = st.date_input('> 시작일')
         end_dt = st.date_input('> 종료일', min_value=start_dt)
-        intr_ex_range = st.slider('> 표면이자율(%)', 0, 100, (0, 10))
-        intr_sf_range = st.slider('> 만기이자율(%)', 0, 100, (0, 10))
-    
-        if st.button('조회'):
-    
+        intr_ex_range = st.slider('> 표면이자율(%)', 0, 50, (0, 10))
+        intr_sf_range = st.slider('> 만기이자율(%)', 0, 50, (0, 10))
+
+        if st.form_submit_button(label='조회'):
+
             df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex_range, intr_sf_range)
             # 총 조회 건수
             row_cnt = "총 " + str(df.shape[0]) + "건"
             st.text(row_cnt)
             st.dataframe(df)
-    
+
             csv = convert_df(df)
-    
+
             st.download_button(
                 label="Download",
                 data=csv,
@@ -85,7 +85,7 @@ if selected == "주식연계채권":
 
 else:
     st.header("기업 지배구조")
-    uploaded_file = st.file_uploader("계통도 데이터를 업로드 해주세요(확장자:xlsx)", type='xlsx', key="file")
+    uploaded_file = st.file_uploader("지배구조 데이터를 업로드 해주세요(확장자:xlsx)", type='xlsx', key="file")
 
     if uploaded_file is not None:
 
