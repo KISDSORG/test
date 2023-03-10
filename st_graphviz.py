@@ -71,7 +71,7 @@ if selected == "주식연계채권":
             intr_ex_range = st.slider('> 표면이자율(%)', 0, 50, (0, 10))
         with c5:
             intr_sf_range = st.slider('> 만기이자율(%)', 0, 50, (0, 10))
-            
+
         form1_bt = st.form_submit_button('조회')
 
     if form1_bt:
@@ -89,6 +89,7 @@ if selected == "주식연계채권":
             file_name='mezzanine.csv',
             mime='text/csv'
         )
+    st.markdown(".stTextInput>label{fond-weight:bold;}", unsafe_allow_html=True)
 
 else:
     st.header("기업 지배구조")
