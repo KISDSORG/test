@@ -67,27 +67,28 @@ if selected == "주식연계채권":
         with c3:
             end_dt = st.date_input('> 종료일', min_value=start_dt)
         c4, c5 = st.columns(2)
-        with c4: 
+        with c4:
             intr_ex_range = st.slider('> 표면이자율(%)', 0, 50, (0, 10))
         with c5:
             intr_sf_range = st.slider('> 만기이자율(%)', 0, 50, (0, 10))
+            
+        form1_bt = st.form_submit_button('조회')
 
-        if st.form_submit_button('조회'):
+    if form1_bt:
+        df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex_range, intr_sf_range)
+        # 총 조회 건수
+        row_cnt = "총 " + str(df.shape[0]) + "건"
+        st.text(row_cnt)
+        st.dataframe(df)
 
-            df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex_range, intr_sf_range)
-            # 총 조회 건수
-            row_cnt = "총 " + str(df.shape[0]) + "건"
-            st.text(row_cnt)
-            st.dataframe(df)
+        csv = convert_df(df)
 
-            csv = convert_df(df)
-
-            st.download_button(
+        st.download_button(
                 label="Download",
-                data=csv,
-                file_name='mezzanine.csv',
-                mime='text/csv'
-            )
+            data=csv,
+            file_name='mezzanine.csv',
+            mime='text/csv'
+        )
 
 else:
     st.header("기업 지배구조")
