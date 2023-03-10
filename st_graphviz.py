@@ -84,7 +84,7 @@ if selected == "주식연계채권":
         csv = convert_df(df)
 
         st.download_button(
-                label="Download",
+            label="Download",
             data=csv,
             file_name='mezzanine.csv',
             mime='text/csv'
@@ -93,6 +93,9 @@ if selected == "주식연계채권":
 else:
     st.header("기업 지배구조")
     uploaded_file = st.file_uploader("지배구조 데이터를 업로드 해주세요(확장자:xlsx)", type='xlsx', key="file")
+    # 샘플 파일 다운로드
+    with open('./sample.xlsx') as f:
+        st.download_button('Sample Input File Download', f)
 
     if uploaded_file is not None:
 
@@ -123,5 +126,4 @@ else:
             # print(row['모회사'], row['자회사'])
             f.edge(row['모회사'], row['자회사'], label=row['지분'])
 
-        st.subheader('[지배구조]')
         st.graphviz_chart(f)
