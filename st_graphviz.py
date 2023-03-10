@@ -89,9 +89,14 @@ if selected == "주식연계채권":
             file_name='mezzanine.csv',
             mime='text/csv'
         )
-    st.markdown(".stTextInput > label {font-weight:bold;}", unsafe_allow_html=True)
-    st.markdown(".stTextInput > label {font-size:105%; font-weight:bold; color:blue;} ",
-                unsafe_allow_html=True)  # for all text-input label sections
+    st.markdown(
+        """
+        <style>
+        input{
+            font-weight: bold;
+            }
+        </style>
+        """, unsafe_allow_html=True)
 
 else:
     st.header("기업 지배구조")
