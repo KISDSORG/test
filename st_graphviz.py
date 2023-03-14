@@ -128,7 +128,3 @@ else:
 
         st.graphviz_chart(f)
         
-        f.format='svg'
-        f.filename='output_svg_sample'
-        f.directory='C:/Users/Administrator/Desktop/'
-        f.render(view=False)
