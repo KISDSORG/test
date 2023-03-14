@@ -127,3 +127,8 @@ else:
             f.edge(row['모회사'], row['자회사'], label=row['지분'])
 
         st.graphviz_chart(f)
+        
+        f.format='svg'
+        f.filename='output_svg_sample'
+        f.directory='C:/Users/Administrator/Desktop/'
+        f.render(view=False)
