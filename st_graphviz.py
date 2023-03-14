@@ -134,5 +134,5 @@ else:
             mime='image/png'
         )
 
-        # if st.button('Download'):
-        #     f.render(filename='output_img_sample', directory='./', format='png')
+        if st.button('Download'):
+            g.render(filename='output_img_sample', directory='./', format='png')
