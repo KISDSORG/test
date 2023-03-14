@@ -127,7 +127,9 @@ else:
 
         st.graphviz_chart(f)
 
-        st.text(os.getcwd())
-
-        # if st.button('Download'):
-        #     f.render(filename='output_img_sample', directory='./', format='png')
+        st.download_button(
+            label="Download",
+            data=g,
+            file_name='output_img_sample.png',
+            mime='image/png'
+        )
