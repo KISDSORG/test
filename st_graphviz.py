@@ -65,7 +65,7 @@ if selected == "주식연계채권":
         with c2:
             start_dt = st.date_input('시작일')
         with c3:
-            end_dt = st.date_input('종료일', min_value=start_dt)
+            end_dt = st.date_input('종료일') #, min_value=start_dt)
         c4, c5 = st.columns(2)
         with c4:
             intr_ex_range = st.slider('표면이자율(%)', 0, 50, (0, 10))
