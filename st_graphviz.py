@@ -61,7 +61,7 @@ if selected == "주식연계채권":
         knd = st.multiselect('채권 종류', ('전환사채권', '신주인수권부사채권', '교환사채권'))
         c1, c2, c3 = st.columns(3)
         with c1:
-            corp_nm = st.text_input('발행사명(전체 기업 검색 시 공란)', '삼성전자')
+            corp_nm = st.text_input('발행사명(전체 기업 검색 시 공란)')
         with c2:
             start_dt = st.date_input('시작일')
         with c3:
