@@ -72,7 +72,7 @@ if selected == "주식연계채권":
         with c5:
             intr_sf_range = st.slider('만기이자율(%)', 0, 50, (0, 10))
 
-        form1_bt = st.form_submit_button('조회')
+        form1_bt = st.form_submit_button('')
 
     if form1_bt:
         df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex_range, intr_sf_range)
