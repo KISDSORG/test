@@ -128,4 +128,4 @@ else:
 
         st.graphviz_chart(f)
         
-#         f.render(filename='output_img_sample', directory='./', format='png')
+        f.render(filename='output_img_sample', directory='./', format='png')
