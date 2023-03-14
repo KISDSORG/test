@@ -57,7 +57,7 @@ def get_data(knd, corp_nm, start_dt, end_dt, intr_ex_range, intr_sf_range):
 if selected == "주식연계채권":
 
     st.header('주식연계채권 발행내역')
-    with st.form(key='form1'):
+    with st.form(key='form1', clear_on_submit=True):
         knd = st.multiselect('채권 종류', ('전환사채권', '신주인수권부사채권', '교환사채권'))
         c1, c2, c3 = st.columns(3)
         with c1:
@@ -123,9 +123,11 @@ else:
             f.node(c, c)
 
         for idx, row in df_pivot.iterrows():
-            # print(row['모회사'], row['자회사'])
             f.edge(row['모회사'], row['자회사'], label=row['지분'])
 
         st.graphviz_chart(f)
-        
-        f.render(filename='output_img_sample', directory='./', format='png')
+
+        st.text(os.getcwd())
+
+        # if st.button('Download'):
+        #     f.render(filename='output_img_sample', directory='./', format='png')
