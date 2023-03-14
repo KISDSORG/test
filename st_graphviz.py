@@ -126,7 +126,4 @@ else:
             g.edge(row['모회사'], row['자회사'], label=row['지분'])
 
         st.graphviz_chart(g)
-        path = os.path.dirname(os.path.abspath('C:/Users/Administrator/Downloads/'))
-        st.text(path)
-        if st.button('Download'):
-            g.render(filename='output_img_sample', directory=path, format='png')
+       
