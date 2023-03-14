@@ -118,14 +118,14 @@ else:
             corp.append(row[1])
         corp = set(corp)
 
-        f = graphviz.Digraph('round-table', comment='The Round Table')
+        g = graphviz.Digraph('round-table', comment='The Round Table')
         for c in corp:
-            f.node(c, c)
+            g.node(c, c)
 
         for idx, row in df_pivot.iterrows():
-            f.edge(row['모회사'], row['자회사'], label=row['지분'])
+            g.edge(row['모회사'], row['자회사'], label=row['지분'])
 
-        st.graphviz_chart(f)
+        st.graphviz_chart(g)
 
         st.download_button(
             label="Download",
@@ -133,3 +133,6 @@ else:
             file_name='output_img_sample.png',
             mime='image/png'
         )
+
+        # if st.button('Download'):
+        #     f.render(filename='output_img_sample', directory='./', format='png')
