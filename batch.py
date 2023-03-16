@@ -7,6 +7,7 @@ import warnings
 import pickle
 import datetime
 from datetime import timedelta
+import time
 
 warnings.filterwarnings(action='ignore')
 API_KEY = 'd7d1be298b9cac1558eab570011f2bb40e2a6825'
@@ -129,6 +130,7 @@ if __name__ == '__main__':
         try:
             row = get_corp_docu(rcept)
             rows.append(row)
+            time.sleep(2)
         except:
             pass
 
@@ -150,4 +152,3 @@ if __name__ == '__main__':
     print("최종 사이즈: ", df_new.shape)
     with open('./Mezzanine_new_test.pkl', 'wb') as f:
         pickle.dump(df_new, f)
-
