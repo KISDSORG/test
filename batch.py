@@ -123,6 +123,7 @@ if __name__ == '__main__':
     rcept_no_list = []
     for r in rcept_names:
         rcept_no_list.extend(get_rcept_no(r, bgn_de, end_de))
+        time.sleep(1)
 
     # 보고서 접수번호별 세부정보 추출
     rows = []
@@ -152,3 +153,5 @@ if __name__ == '__main__':
     print("최종 사이즈: ", df_new.shape)
     with open('./Mezzanine_new_test.pkl', 'wb') as f:
         pickle.dump(df_new, f)
+
+
