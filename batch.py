@@ -151,7 +151,7 @@ if __name__ == '__main__':
     df_new = pd.concat([df_org, df])
     df_new = df_new.sort_values('공시일')
     print("최종 사이즈: ", df_new.shape)
-    with open('./Mezzanine_new_test.pkl', 'wb') as f:
+    with open('./Mezzanine_new.pkl', 'wb') as f:
         pickle.dump(df_new, f)
 
 
