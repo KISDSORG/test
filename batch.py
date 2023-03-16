@@ -13,13 +13,13 @@ API_KEY = 'd7d1be298b9cac1558eab570011f2bb40e2a6825'
 headers= {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36',
           'Accept-Encoding': '*', 'Connection': 'keep-alive'}
 
-# target_day = (datetime.datetime.today()-timedelta(days=1)).strftime('%Y%m%d')
-# print(target_day)
-# bgn_de = target_day # 코드 수행 전일
-# end_de = target_day # 코드 수행 전일
+target_day = (datetime.datetime.today()-timedelta(days=2)).strftime('%Y%m%d') #3/14 테스트
+print(target_day)
+bgn_de = target_day # 코드 수행 전일
+end_de = target_day # 코드 수행 전일
 
-bgn_de = '20230310'
-end_de = '20230312'
+# bgn_de = '20230314'
+# end_de = '20230314'
 
 
 # 보고서명, 일자로 검색해서 보고서 접수번호 추출
