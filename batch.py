@@ -131,7 +131,7 @@ if __name__ == '__main__':
         try:
             row = get_corp_docu(rcept)
             rows.append(row)
-            time.sleep(2)
+            time.sleep(1)
         except:
             pass
 
@@ -139,7 +139,7 @@ if __name__ == '__main__':
     df = df[df['대상주식'] != '-']
     print("크롤링 결과 사이즈: ", df.shape)
 
-    with open('./Mezzanine_new_test.pkl', 'rb') as f:
+    with open('./Mezzanine_new.pkl', 'rb') as f:
         df_org = pickle.load(f)
     print("백업 사이즈: ", df_org.shape)
 
