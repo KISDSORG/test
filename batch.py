@@ -18,10 +18,6 @@ print(target_day)
 bgn_de = target_day # 코드 수행 전일
 end_de = target_day # 코드 수행 전일
 
-# bgn_de = '20230314'
-# end_de = '20230314'
-
-
 # 보고서명, 일자로 검색해서 보고서 접수번호 추출
 def get_rcept_no(report_nm, bgn_de, end_de):
     rcept_no_list = []
