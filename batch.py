@@ -18,6 +18,7 @@ print(target_day)
 bgn_de = target_day # 코드 수행 전일
 end_de = target_day # 코드 수행 전일
 
+
 # 보고서명, 일자로 검색해서 보고서 접수번호 추출
 def get_rcept_no(report_nm, bgn_de, end_de):
     rcept_no_list = []
@@ -149,3 +150,4 @@ if __name__ == '__main__':
     print("최종 사이즈: ", df_new.shape)
     with open('./Mezzanine_new_test.pkl', 'wb') as f:
         pickle.dump(df_new, f)
+
