@@ -14,7 +14,7 @@ API_KEY = 'd7d1be298b9cac1558eab570011f2bb40e2a6825'
 headers= {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36',
           'Accept-Encoding': '*', 'Connection': 'keep-alive'}
 
-target_day = (datetime.datetime.today()-timedelta(days=2)).strftime('%Y%m%d') #3/14 테스트
+target_day = (datetime.datetime.today()-timedelta(days=1)).strftime('%Y%m%d')
 print(target_day)
 bgn_de = target_day # 코드 수행 전일
 end_de = target_day # 코드 수행 전일
@@ -138,7 +138,7 @@ if __name__ == '__main__':
     df = df[df['대상주식'] != '-']
     print("크롤링 결과 사이즈: ", df.shape)
 
-    with open('./Mezzanine_new.pkl', 'rb') as f:
+    with open('./Mezzanine_new_test.pkl', 'rb') as f:
         df_org = pickle.load(f)
     print("백업 사이즈: ", df_org.shape)
 
