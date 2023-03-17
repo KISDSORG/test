@@ -7,7 +7,7 @@ beautifulsoup4==4.11.1
 lxml
 zipp==3.7.0
 Datetime==4.3
-urllib3==1.26.14
+urllib3==1.26.15
 graphviz
 matplotlib==3.5.1
 openpyxl
