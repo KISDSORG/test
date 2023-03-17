@@ -2,7 +2,7 @@ name: pickle bk and push
 
 on:
   schedule:
-    - cron: '0 4 * * *'
+    - cron: '30 4 * * *'
 
 jobs:
   build:
