@@ -10,7 +10,7 @@ from datetime import timedelta
 import time
 
 warnings.filterwarnings(action='ignore')
-API_KEY = '7ec9c3e4a52cf70fe98ad1b15eb1cfc1fa2708b2'
+API_KEY = 'd7d1be298b9cac1558eab570011f2bb40e2a6825'
 headers= {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36',
           'Accept-Encoding': '*', 'Connection': 'keep-alive'}
 
@@ -18,7 +18,6 @@ target_day = (datetime.datetime.today()-timedelta(days=1)).strftime('%Y%m%d')
 print(target_day)
 bgn_de = target_day # 코드 수행 전일
 end_de = target_day # 코드 수행 전일
-
 
 # 보고서명, 일자로 검색해서 보고서 접수번호 추출
 def get_rcept_no(report_nm, bgn_de, end_de):
@@ -58,7 +57,7 @@ def get_corp_docu(rcept_no):
     url = 'https://opendart.fss.or.kr/api/document.xml'
     params = {'crtfc_key': API_KEY, 'rcept_no': rcept_no}
     response = requests.get(url, params=params, verify=False)
-
+    time.sleep(2)
     try:
         zf = zipfile.ZipFile(BytesIO(response.content))
         fp = zf.read('{}.xml'.format(rcept_no))
@@ -112,11 +111,13 @@ def get_corp_docu(rcept_no):
                '사채만기일': exp_dt, '전환/행사/교환 비율': exe_rt, '전환/행사/교환 가액': exe_prc, '대상주식': stk_knd, '주식수': stk_cnt,
                '주식총수대비비율(%)': stk_rt, '청구/행사 시작일':sb_bgn_dt, '청구/행사 종료일':sb_end_dt, '할증발행':exe_func, '리픽싱조항': min_rsn, '최저조정가액한도': min_prc, '인수인': issu_nm}
 
+        return row
+
     except Exception as e:
         print(rcept_no + " Error!")
         print(e)
 
-    return row
+        return {}
 
 if __name__ == '__main__':
     rcept_names = ['주요사항보고서(전환사채권발행결정)', '주요사항보고서(신주인수권부사채권발행결정)', '주요사항보고서(교환사채권발행결정)']
@@ -128,30 +129,36 @@ if __name__ == '__main__':
     # 보고서 접수번호별 세부정보 추출
     rows = []
     for rcept in rcept_no_list:
-        try:
-            row = get_corp_docu(rcept)
-            rows.append(row)
-            time.sleep(1)
-        except:
-            pass
+        row = get_corp_docu(rcept)
+        rows.append(row)
+        # try:
+        #     row = get_corp_docu(rcept)
+        #     rows.append(row)
+        # except:
+        #     print(rcept + " Error!")
+        #     pass
 
     df = pd.DataFrame(rows)
-    df = df[df['대상주식'] != '-']
-    print("크롤링 결과 사이즈: ", df.shape)
+    if df.empty == False:
+        df = df[df['대상주식'] != '-']
+        print("크롤링 결과 사이즈: ", df.shape)
 
-    with open('./Mezzanine_new.pkl', 'rb') as f:
-        df_org = pickle.load(f)
-    print("백업 사이즈: ", df_org.shape)
+        with open('./Mezzanine_new.pkl', 'rb') as f:
+            df_org = pickle.load(f)
+        print("백업 사이즈: ", df_org.shape)
 
-    # 기존파일 백업
-    with open('./Mezzanine_bk.pkl', 'wb') as f:
-        pickle.dump(df_org, f)
+        # 기존파일 백업
+        with open('./Mezzanine_bk.pkl', 'wb') as f:
+            pickle.dump(df_org, f)
 
-    # 파일 합치기
-    df_new = pd.concat([df_org, df])
-    df_new = df_new.sort_values('공시일')
-    print("최종 사이즈: ", df_new.shape)
-    with open('./Mezzanine_new.pkl', 'wb') as f:
-        pickle.dump(df_new, f)
+        # 파일 합치기
+        df_new = pd.concat([df_org, df])
+        df_new = df_new.sort_values('공시일')
+        print("최종 사이즈: ", df_new.shape)
+        with open('./Mezzanine_new.pkl', 'wb') as f:
+            pickle.dump(df_new, f)
+
+    else:
+        print("No row added!")
 
 
