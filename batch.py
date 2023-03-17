@@ -10,7 +10,7 @@ from datetime import timedelta
 import time
 
 warnings.filterwarnings(action='ignore')
-API_KEY = 'd7d1be298b9cac1558eab570011f2bb40e2a6825'
+API_KEY = '7ec9c3e4a52cf70fe98ad1b15eb1cfc1fa2708b2'
 headers= {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36',
           'Accept-Encoding': '*', 'Connection': 'keep-alive'}
 
