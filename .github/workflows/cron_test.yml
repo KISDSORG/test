@@ -2,7 +2,7 @@ name: pickle bk and push
 
 on:
   schedule:
-    - cron: '0 6 * * *'
+    - cron: '0 7 * * *'
 
 jobs:
   build:
@@ -16,15 +16,18 @@ jobs:
       run: python -m pip install --upgrade pip
     - name: 2. 환경 설정
       run: pip install -r requirements.txt
-    - name: 3. 파이썬 실행!
+    - name: 3. 인증서 설정
+      run: |
+        git config --global http.sslVerify false
+    - name: 4. 파이썬 실행!
       run: python batch.py
-    - name: Commit files
+    - name: 5. Commit files
       run: |
         git config --local user.email "cksanl13@naver.com"
         git config --local user.name "cksanl13"
         git add .
         git commit -m "Run crawler and update current data"
-    - name: Push changes
+    - name: 6. Push changes
       uses: ad-m/github-push-action@master
       with:
         # branch: "master"
