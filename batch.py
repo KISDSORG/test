@@ -10,7 +10,7 @@ from datetime import timedelta
 import time
 
 warnings.filterwarnings(action='ignore')
-API_KEY = '7ec9c3e4a52cf70fe98ad1b15eb1cfc1fa2708b2'
+API_KEY = 'd7d1be298b9cac1558eab570011f2bb40e2a6825'
 headers= {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36',
           'Accept-Encoding': '*', 'Connection': 'keep-alive'}
 
@@ -30,9 +30,9 @@ def get_rcept_no(report_nm, bgn_de, end_de):
         , 'last_reprt_at': 'Y'}
     response = requests.get(url, params=params, headers=headers, verify=False)
     soup = BeautifulSoup(response.content, features='xml')
-    total_page = soup.find('total_page').get_text()
 
     try:
+        total_page = soup.find('total_page').get_text()
         for i in range(1, int(total_page) + 1):
             params = {'crtfc_key': API_KEY
                 , 'bgn_de': bgn_de
@@ -57,7 +57,7 @@ def get_corp_docu(rcept_no):
     url = 'https://opendart.fss.or.kr/api/document.xml'
     params = {'crtfc_key': API_KEY, 'rcept_no': rcept_no}
     response = requests.get(url, params=params, verify=False)
-    time.sleep(2)
+    time.sleep(1)
     try:
         zf = zipfile.ZipFile(BytesIO(response.content))
         fp = zf.read('{}.xml'.format(rcept_no))
@@ -131,12 +131,6 @@ if __name__ == '__main__':
     for rcept in rcept_no_list:
         row = get_corp_docu(rcept)
         rows.append(row)
-        # try:
-        #     row = get_corp_docu(rcept)
-        #     rows.append(row)
-        # except:
-        #     print(rcept + " Error!")
-        #     pass
 
     df = pd.DataFrame(rows)
     if df.empty == False:
@@ -160,5 +154,3 @@ if __name__ == '__main__':
 
     else:
         print("No row added!")
-
-
