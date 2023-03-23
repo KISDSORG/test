@@ -31,7 +31,7 @@ with st.sidebar:
 def convert_df(df):
     return df.to_csv().encode('utf-8-sig')
 
-def get_data(knd, corp_nm, start_dt, end_dt, intr_ex_range, intr_sf_range):
+def get_data(knd, corp_nm, start_dt, end_dt, intr_ex_min, intr_ex_max, intr_sf_min, intr_sf_max):
     with open('./Mezzanine_new.pkl', 'rb') as f:
         df = pickle.load(f)
         df = df[df['종류'].isin(knd)]
@@ -39,8 +39,8 @@ def get_data(knd, corp_nm, start_dt, end_dt, intr_ex_range, intr_sf_range):
         df['만기이자율(%)'] = df['만기이자율(%)'].str.strip()
         df.loc[df['표면이자율(%)'] == '-', '표면이자율(%)'] = -1000
         df.loc[df['만기이자율(%)'] == '-', '만기이자율(%)'] = -1000
-        df = df[(df['표면이자율(%)'].astype(float) >= intr_ex_range[0]) & (df['표면이자율(%)'].astype(float) <= intr_ex_range[1])
-                & (df['만기이자율(%)'].astype(float) >= intr_sf_range[0]) & (df['만기이자율(%)'].astype(float) <= intr_sf_range[1])]
+        df = df[(df['표면이자율(%)'].astype(float) >= intr_ex_min) & (df['표면이자율(%)'].astype(float) <= intr_ex_max)
+                & (df['만기이자율(%)'].astype(float) >= intr_sf_min) & (df['만기이자율(%)'].astype(float) <= intr_sf_max)]
         if corp_nm == '':
             df = df[(df['공시일'] >= start_dt.strftime('%Y%m%d')) & (df['공시일'] <= end_dt.strftime('%Y%m%d'))]
         else:
@@ -68,14 +68,19 @@ if selected == "주식연계채권":
             end_dt = st.date_input('종료일') #, min_value=start_dt)
         c4, c5 = st.columns(2)
         with c4:
-            intr_ex_range = st.slider('표면이자율(%)', 0, 50, (0, 10))
+            intr_ex_min = st.number_input('표면이자율(%) MIN', min_value=0, max_value=100, value=0)
         with c5:
-            intr_sf_range = st.slider('만기이자율(%)', 0, 50, (0, 10))
+            intr_ex_max = st.number_input('표면이자율(%) MAX', min_value=0, max_value=100, value=10)
+        c6, c7 = st.columns(2)
+        with c6:
+            intr_sf_min = st.number_input('만기이자율(%) MIN', min_value=0, max_value=100, value=0)
+        with c7:
+            intr_sf_max = st.number_input('만기이자율(%) MAX', min_value=0, max_value=100, value=10)
 
         form1_bt = st.form_submit_button('조회')
 
     if form1_bt:
-        df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex_range, intr_sf_range)
+        df = get_data(knd, corp_nm, start_dt, end_dt, intr_ex_min, intr_ex_max, intr_sf_min, intr_sf_max)
         # 총 조회 건수
         row_cnt = "총 " + str(df.shape[0]) + "건"
         st.text(row_cnt)
@@ -89,7 +94,7 @@ if selected == "주식연계채권":
             file_name='mezzanine.csv',
             mime='text/csv'
         )
-
+        
 else:
     st.header("기업 지배구조")
     uploaded_file = st.file_uploader("지배구조 데이터를 업로드 해주세요(확장자:xlsx)", type='xlsx', key="file")
