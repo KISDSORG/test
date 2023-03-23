@@ -68,14 +68,14 @@ if selected == "주식연계채권":
             end_dt = st.date_input('종료일') #, min_value=start_dt)
         c4, c5 = st.columns(2)
         with c4:
-            intr_ex_min = st.number_input('표면이자율(%) MIN', min_value=0) #st.slider('표면이자율(%)', 0, 50, (0, 10))
+            intr_ex_min = st.number_input('표면이자율(%) MIN', min_value=0, max_value=100, value=0)
         with c5:
-            intr_ex_max = st.number_input('표면이자율(%) MAX', min_value=intr_ex_min, max_value=100)
+            intr_ex_max = st.number_input('표면이자율(%) MAX', min_value=0, max_value=100, value=10)
         c6, c7 = st.columns(2)
         with c6:
-            intr_sf_min = st.number_input('만기이자율(%) MIN', min_value=0)
+            intr_sf_min = st.number_input('만기이자율(%) MIN', min_value=0, max_value=100, value=0)
         with c7:
-            intr_sf_max = st.number_input('만기이자율(%) MAX', min_value=intr_sf_min, max_value=100)
+            intr_sf_max = st.number_input('만기이자율(%) MAX', min_value=0, max_value=100, value=10)
 
         form1_bt = st.form_submit_button('조회')
 
