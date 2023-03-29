@@ -39,8 +39,8 @@ def get_data(knd, corp_nm, start_dt, end_dt, intr_ex_min, intr_ex_max, intr_sf_m
         df['만기이자율(%)'] = df['만기이자율(%)'].str.strip()
         df.loc[df['표면이자율(%)'] == '-', '표면이자율(%)'] = -1000
         df.loc[df['만기이자율(%)'] == '-', '만기이자율(%)'] = -1000
-        df = df[((df['표면이자율(%)'].astype(float) >= intr_ex_min) & (df['표면이자율(%)'].astype(float) <= intr_ex_max))|(df['표면이자율(%)'].astype(float)==-1000)
-                & (df['만기이자율(%)'].astype(float) >= intr_sf_min) & (df['만기이자율(%)'].astype(float) <= intr_sf_max)]
+        df = df[(((df['표면이자율(%)'].astype(float) >= intr_ex_min) & (df['표면이자율(%)'].astype(float) <= intr_ex_max))|(df['표면이자율(%)'].astype(float)==-1000))
+                & (((df['만기이자율(%)'].astype(float) >= intr_sf_min) & (df['만기이자율(%)'].astype(float) <= intr_sf_max))|(df['만기이자율(%)'].astype(float)==-1000))]
         if corp_nm == '':
             df = df[(df['공시일'] >= start_dt.strftime('%Y%m%d')) & (df['공시일'] <= end_dt.strftime('%Y%m%d'))]
         else:
