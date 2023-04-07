@@ -142,14 +142,14 @@ if __name__ == '__main__':
         print("백업 사이즈: ", df_org.shape)
 
         # 기존파일 백업
-#         with open('./Mezzanine_bk.pkl', 'wb') as f:
-#             pickle.dump(df_org, f)
+        with open('./Mezzanine_bk.pkl', 'wb') as f:
+            pickle.dump(df_org, f)
 
         # 파일 합치기
         df_new = pd.concat([df_org, df])
         df_new = df_new.sort_values('공시일')
         print("최종 사이즈: ", df_new.shape)
-        with open('./Mezzanine_new_test.pkl', 'wb') as f:
+        with open('./Mezzanine_new.pkl', 'wb') as f:
             pickle.dump(df_new, f)
 
     else:
