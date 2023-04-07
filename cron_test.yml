@@ -2,7 +2,7 @@ name: pickle bk and push
 
 on:
   schedule:
-    - cron: '0 9 * * *'
+    - cron: '30 7 * * *'
 
 jobs:
   build:
@@ -23,7 +23,7 @@ jobs:
       run: |
         git config --global http.sslVerify false
     - name: 4. 파이썬 실행!
-      run: python batch.py
+      run: python batch_test.py
     - name: 5. Commit files
       run: |
         git config --local user.email "cksanl13@naver.com"
