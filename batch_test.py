@@ -32,7 +32,7 @@ def get_rcept_no(report_nm, bgn_de, end_de):
         , 'pblntf_detail_ty': 'B001'
         , 'last_reprt_at': 'Y'}
     response = requests.get(url, params=params, headers=headers, verify=False)
-    soup = BeautifulSoup(response.content, features='xml')
+    soup = BeautifulSoup(response.content, features='html.parser')
 
     try:
         total_page = soup.find('total_page').get_text()
@@ -44,7 +44,7 @@ def get_rcept_no(report_nm, bgn_de, end_de):
                 , 'page_no': str(i)
                 , 'last_reprt_at': 'Y'}
             response = requests.get(url, params=params, headers=headers, verify=False)
-            soup = BeautifulSoup(response.content, features='xml')
+            soup = BeautifulSoup(response.content, features='html.parser')
             for c in soup.find_all('list'):
                 if report_nm in c.report_nm.get_text():
                     rcept_no_list.append(c.rcept_no.get_text())
