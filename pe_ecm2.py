@@ -98,10 +98,9 @@ if selected == "주식연계채권":
         )
 
 elif selected == "타법인출자현황":
-
-    data_path = os.getcwd() + "\\datasets\\"
-    if not os.path.isdir(data_path):
-        os.mkdir(data_path)
+    # data_path = os.getcwd() + "\\datasets\\"
+    # if not os.path.isdir(data_path):
+    #     os.mkdir(data_path)
 
     st.header('ECM2부 - 타법인출자현황(단순투자)')
 
@@ -118,7 +117,7 @@ elif selected == "타법인출자현황":
 
     if st.session_state.get('button') == True:
         # 파일 존재할 경우
-        if os.path.isfile(data_path + "ECM_타법인출자-단순투자-{}-{}.csv".format(year, r_code)):
+        if os.path.isfile('./datasets/' + "ECM_타법인출자-단순투자-{}-{}.csv".format(year, r_code)):
             st.warning("""ECM_타법인출자-단순투자-{}-{} 파일이 저장소에 존재합니다. 재수집하시겠습니까?
             \n (아니오 선택 시 기존 파일을 불러옵니다.)""".format(year, r_code), icon="⚠️")
 
