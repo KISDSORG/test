@@ -2,10 +2,12 @@
 00. import
 
 '''
+from tqdm import tqdm
 from streamlit_option_menu import option_menu
 
 import streamlit as st
 import pandas as pd
+import numpy as np
 import OpenDartReader
 import warnings
 import dart_fss
@@ -111,4 +113,5 @@ def main(year, r_code):
     st.dataframe(save_df)
 
     save_df = convert_df(save_df)
+    save_df.to_csv('./datasets/ECM_타법인출자-단순투자-{}-{}.csv'.format(year, r_code), encoding='cp949')
     st.download_button(label="Download", data=save_df, file_name='ECM_타법인출자-단순투자-{}-{}.csv'.format(year, r_code), mime='text/csv')
