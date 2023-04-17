@@ -118,7 +118,6 @@ if not os.path.isdir(data_path):
     os.mkdir(data_path)
     
 ## 03. layout
-st.set_page_config(layout='wide')
 progress_text = "Operation in progress. Please wait."
 change_dict = {"1분기보고서": 11013, "반기보고서": 11012, "3분기보고서": 11014, "사업보고서": 11011}
 
