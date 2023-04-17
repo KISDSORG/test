@@ -98,10 +98,6 @@ if selected == "주식연계채권":
         )
 
 elif selected == "타법인출자현황":
-    # data_path = os.getcwd() + "\\datasets\\"
-    # if not os.path.isdir(data_path):
-    #     os.mkdir(data_path)
-
     st.header('ECM2부 - 타법인출자현황(단순투자)')
 
     with st.form(key='form2'):
@@ -132,7 +128,7 @@ elif selected == "타법인출자현황":
                 ecm2.main(year, r_code)
 
             elif btn2:
-                save_df = pd.read_csv(data_path + 'ECM_타법인출자-단순투자-{}-{}.csv'.format(year, r_code))
+                save_df = pd.read_csv('./datasets/'+ 'ECM_타법인출자-단순투자-{}-{}.csv'.format(year, r_code))
                 st.dataframe(save_df)
                 save_df = convert_df(save_df)
                 st.download_button(label="Download", data=save_df,
