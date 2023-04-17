@@ -130,7 +130,7 @@ elif selected == "타법인출자현황":
                 btn2 = st.button('아니오')
 
             if btn1:
-                ecm2.main()
+                ecm2.main(year, r_code)
 
             elif btn2:
                 save_df = pd.read_csv(data_path + 'ECM_타법인출자-단순투자-{}-{}.csv'.format(year, r_code))
@@ -140,7 +140,7 @@ elif selected == "타법인출자현황":
                                    file_name='ECM_타법인출자-단순투자-{}-{}.csv'.format(year, r_code), mime='text/csv')
 
         else:
-            ecm2.main()
+            ecm2.main(year, r_code)
 
 else:
     st.header("기업 지배구조")
