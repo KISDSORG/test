@@ -105,16 +105,16 @@ elif selected == "타법인출자현황":
 
     st.header('ECM2부 - 타법인출자현황(단순투자)')
 
-    with st.form(key='form1'):
+    with st.form(key='form2'):
         c1, c2 = st.columns(2)
         with c1:
             year = st.selectbox('연도', [x for x in range(2015, datetime.datetime.now().year + 1)])
         with c2:
             r_code = st.radio("보고서 선택", ("1분기보고서", "반기보고서", "3분기보고서", "사업보고서"), horizontal=True)
-        form1_bt = st.form_submit_button('조회')
+        form2_bt = st.form_submit_button('조회')
 
     if st.session_state.get('button') != True:
-        st.session_state['button'] = form1_bt
+        st.session_state['button'] = form2_bt
 
     if st.session_state.get('button') == True:
         # 파일 존재할 경우
