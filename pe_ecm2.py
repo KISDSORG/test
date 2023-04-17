@@ -27,7 +27,7 @@ st.set_page_config(layout='wide')
 # 화면
 with st.sidebar:
     selected = option_menu("Menu", ["주식연계채권", "타법인출자현황", "기업지배구조"],
-                           icons=['card-list', 'card-list', 'diagram-3'],
+                           icons=['card-list', 'bank', 'diagram-3'],
                            menu_icon='cast', default_index=0)
 
 def convert_df(df):
