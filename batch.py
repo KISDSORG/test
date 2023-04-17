@@ -14,10 +14,13 @@ API_KEY = 'd7d1be298b9cac1558eab570011f2bb40e2a6825'
 headers= {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36',
           'Accept-Encoding': '*', 'Connection': 'keep-alive'}
 
-target_day = (datetime.datetime.today()-timedelta(days=1)).strftime('%Y%m%d')
-print(target_day)
-bgn_de = target_day # 코드 수행 전일
-end_de = target_day # 코드 수행 전일
+with open('./Mezzanine_new.pkl', 'rb') as f:
+    df_org = pickle.load(f)
+df_org = df_org.dropna(subset=['공시일'])
+bgn_de = max(df_org['공시일'])
+bgn_de = (datetime.datetime.strptime(bgn_de, '%Y%m%d')+timedelta(days=1)).strftime('%Y%m%d')
+end_de = (datetime.datetime.today()-timedelta(days=1)).strftime('%Y%m%d')
+print('bgn_de:', bgn_de, 'end_de:', end_de)
 
 # 보고서명, 일자로 검색해서 보고서 접수번호 추출
 def get_rcept_no(report_nm, bgn_de, end_de):
@@ -29,7 +32,7 @@ def get_rcept_no(report_nm, bgn_de, end_de):
         , 'pblntf_detail_ty': 'B001'
         , 'last_reprt_at': 'Y'}
     response = requests.get(url, params=params, headers=headers, verify=False)
-    soup = BeautifulSoup(response.content, features='xml')
+    soup = BeautifulSoup(response.content, features='html.parser')
 
     try:
         total_page = soup.find('total_page').get_text()
@@ -41,7 +44,7 @@ def get_rcept_no(report_nm, bgn_de, end_de):
                 , 'page_no': str(i)
                 , 'last_reprt_at': 'Y'}
             response = requests.get(url, params=params, headers=headers, verify=False)
-            soup = BeautifulSoup(response.content, features='xml')
+            soup = BeautifulSoup(response.content, features='html.parser')
             for c in soup.find_all('list'):
                 if report_nm in c.report_nm.get_text():
                     rcept_no_list.append(c.rcept_no.get_text())
@@ -133,12 +136,12 @@ if __name__ == '__main__':
         rows.append(row)
 
     df = pd.DataFrame(rows)
+    df = df[df['대상주식'] != '-']
+    df = df.dropna(subset=['공시일', '발행사'])
+    
     if df.empty == False:
-        df = df[df['대상주식'] != '-']
         print("크롤링 결과 사이즈: ", df.shape)
 
-        with open('./Mezzanine_new.pkl', 'rb') as f:
-            df_org = pickle.load(f)
         print("백업 사이즈: ", df_org.shape)
 
         # 기존파일 백업
