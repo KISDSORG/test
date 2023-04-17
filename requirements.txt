@@ -12,3 +12,5 @@ graphviz
 matplotlib==3.5.1
 openpyxl
 pathlib
+OpenDartReader==0.2.1
+dart_fss==0.4.2
