@@ -99,47 +99,42 @@ if selected == "주식연계채권":
 
 elif selected == "타법인출자현황":
     st.header('ECM2부 - 타법인출자현황(단순투자)')
-
+    ############################################
+    ################## 변경 ####################
+    ############################################
     with st.form(key='form2'):
         c1, c2 = st.columns(2)
         with c1:
-            year = st.selectbox('연도', [x for x in range(2015, datetime.datetime.now().year + 1)])
+            year = st.selectbox('연도',[x for x in range(2015, datetime.datetime.now().year+1)])
+            file_list = st.selectbox('저장소 파일',sorted(os.listdir('./datasets/')))
         with c2:
             r_code = st.radio("보고서 선택", ("1분기보고서", "반기보고서", "3분기보고서", "사업보고서"), horizontal=True)
+            load = st.radio("재수집 여부", ("아니오", "예"), horizontal=True)
         form2_bt = st.form_submit_button('조회')
-
-    if st.session_state.get('button') != True:
-        st.session_state['button'] = form2_bt
-
-    if st.session_state.get('button') == True:
+        
+    if form2_bt:
         # 파일 존재할 경우
         if os.path.isfile('./datasets/' + "ECM_타법인출자-단순투자-{}-{}.csv".format(year, r_code)):
-            st.warning("""ECM_타법인출자-단순투자-{}-{} 파일이 저장소에 존재합니다. 재수집하시겠습니까?
-            \n (아니오 선택 시 기존 파일을 불러옵니다.)""".format(year, r_code), icon="⚠️")
+            st.warning("""ECM_타법인출자-단순투자-{}-{} 파일이 저장소에 존재합니다.""".format(year,r_code), icon="⚠️")
 
-            inside_c1, inside_c2 = st.columns(2)
-
-            with inside_c1:
-                btn1 = st.button('예')
-            with inside_c2:
-                btn2 = st.button('아니오')
-
-            if btn1:
+            if load == "예":
+                st.warning('사용자 조건에 따라 재수집을 진행합니다.', icon="⚠️")
                 ecm2.main(year, r_code)
 
-            elif btn2:
-                save_df = pd.read_csv('./datasets/'+ 'ECM_타법인출자-단순투자-{}-{}.csv'.format(year, r_code))
+            else:
+                st.warning('사용자 조건에 따라 저장소 파일을 불러옵니다.', icon="⚠️")
+                save_df = pd.read_csv('./datasets/' + 'ECM_타법인출자-단순투자-{}-{}.csv'.format(year, r_code))
                 st.dataframe(save_df)
                 save_df = convert_df(save_df)
-                st.download_button(label="Download", data=save_df,
-                                   file_name='ECM_타법인출자-단순투자-{}-{}.csv'.format(year, r_code), mime='text/csv')
+                st.download_button(label="Download", data=save_df, file_name='ECM_타법인출자-단순투자-{}-{}.csv'.format(year, r_code), mime='text/csv')
 
         else:
             ecm2.main(year, r_code)
 
+
 else:
     st.header("기업 지배구조")
-    uploaded_file = st.file_uploader("지배구조 데이터를 업로드 해주세요(.xlsx)", type='xlsx')
+    uploaded_file = st.file_uploader("지배구조 데이터를 업로드 해주세요(확장자:xlsx)", type='xlsx', key="file")
     # 샘플 파일 다운로드
     with open('./sample.xlsx', 'rb') as f:
         st.download_button('Sample Input File Download', f, file_name='sample.xlsx')

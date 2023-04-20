@@ -1,10 +1,5 @@
-'''
-00. import
-
-'''
 from tqdm import tqdm
 from streamlit_option_menu import option_menu
-
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -65,7 +60,7 @@ def main(year, r_code):
     for code in corp_df.corp_code.unique():
         try:
             temp_df = get_data(dart, code, year, r_code)
-
+            
             if temp_df.shape[0] == 0:
                 pass_list.append(code)
                 time.sleep(sleep_opt)
@@ -81,16 +76,25 @@ def main(year, r_code):
 
             cnt += 1
             t_cnt += 1
+            ############################################
+            ################## 추가 ####################
+            ############################################
+            p_ratio = cnt / corp_df.shape[0]
+            p_bar.progress(p_ratio, text=progress_text)
             time.sleep(sleep_opt)
 
         except:
             time.sleep(3)
             temp_df = get_data(dart, code, year, r_code)
+            
+            if t_cnt == 0:
+                output_df = temp_df
 
             if temp_df.shape[0] == 0:
                 pass_list.append(code)
                 time.sleep(sleep_opt)
                 cnt += 1
+                
                 p_ratio = cnt / corp_df.shape[0]
                 p_bar.progress(p_ratio, text=progress_text)
                 continue
@@ -108,10 +112,17 @@ def main(year, r_code):
 
     p_ratio = 1.0
     p_bar.progress(p_ratio, text=progress_text)
-    save_df = output_df.loc[(output_df['출자목적'] == '단순투자') & (output_df['법인명'].isin(list(corp_df.corp_name.unique())))]
-    save_df.index = [x for x in range(save_df.shape[0])]
-    st.dataframe(save_df)
+    
+    ############################################
+    ################## 추가 ####################
+    ############################################
+    try:
+        save_df = output_df.loc[(output_df['출자목적'] == '단순투자') & (output_df['법인명'].isin(list(corp_df.corp_name.unique())))]
+        save_df.index = [x for x in range(save_df.shape[0])]
+        st.dataframe(save_df)
 
-    save_df = convert_df(save_df)
-    save_df.to_csv('./datasets/ECM_타법인출자-단순투자-{}-{}.csv'.format(year, r_code), encoding='cp949')
-    st.download_button(label="Download", data=save_df, file_name='ECM_타법인출자-단순투자-{}-{}.csv'.format(year, r_code), mime='text/csv')
+        save_df = convert_df(save_df)
+        save_df.to_csv('./datasets/ECM_타법인출자-단순투자-{}-{}.csv'.format(year, r_code), encoding='cp949')
+        st.download_button(label="Download", data=save_df, file_name='ECM_타법인출자-단순투자-{}-{}.csv'.format(year, r_code), mime='text/csv')
+    except:
+        st.write("수집 데이터 없음")
