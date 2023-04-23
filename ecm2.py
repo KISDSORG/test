@@ -33,9 +33,12 @@ def get_data(dart, code, year, quarter):
         return invst_df
 
 @st.cache_data
-def convert_df(df):
+def convert_df(df, encode_opt = False):
     # IMPORTANT: Cache the conversion to prevent computation on every rerun
-    return df.to_csv().encode('CP949')    
+    if encode_opt:
+        return df.to_csv().encode('CP949')
+    else:
+        return df.to_csv()  
 
 def main(year, r_code):
     progress_text = "Operation in progress. Please wait."
@@ -112,17 +115,16 @@ def main(year, r_code):
 
     p_ratio = 1.0
     p_bar.progress(p_ratio, text=progress_text)
-    
-    ############################################
-    ################## 추가 ####################
-    ############################################
+
     try:
         save_df = output_df.loc[(output_df['출자목적'] == '단순투자') & (output_df['법인명'].isin(list(corp_df.corp_name.unique())))]
         save_df.index = [x for x in range(save_df.shape[0])]
         st.dataframe(save_df)
 
-        save_df = convert_df(save_df)
-        save_df.to_csv('./datasets/ECM_타법인출자-단순투자-{}-{}.csv'.format(year, r_code), encoding='cp949')
-        st.download_button(label="Download", data=save_df, file_name='ECM_타법인출자-단순투자-{}-{}.csv'.format(year, r_code), mime='text/csv')
+        save_df1 = convert_df(save_df)
+        save_df1.to_csv('./datasets/ECM_타법인출자-단순투자-{}-{}.csv'.format(year, r_code))
+        
+        save_df2 = convert_df(save_df, True)
+        st.download_button(label="Download", data=save_df2, file_name='ECM_타법인출자-단순투자-{}-{}.csv'.format(year, r_code), mime='text/csv')
     except:
         st.write("수집 데이터 없음")
