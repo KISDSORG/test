@@ -33,12 +33,12 @@ def get_data(dart, code, year, quarter):
         return invst_df
 
 @st.cache_data
-def convert_df(df, encode_opt = False):
+def convert_df(df, encode_opt=False):
     # IMPORTANT: Cache the conversion to prevent computation on every rerun
     if encode_opt:
         return df.to_csv().encode('CP949')
     else:
-        return df.to_csv()  
+        return df.to_csv().encode('utf-8-sig')
 
 def main(year, r_code):
     progress_text = "Operation in progress. Please wait."
@@ -79,9 +79,7 @@ def main(year, r_code):
 
             cnt += 1
             t_cnt += 1
-            ############################################
-            ################## 추가 ####################
-            ############################################
+
             p_ratio = cnt / corp_df.shape[0]
             p_bar.progress(p_ratio, text=progress_text)
             time.sleep(sleep_opt)
