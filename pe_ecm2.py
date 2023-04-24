@@ -122,7 +122,7 @@ elif selected == "타법인출자현황":
                 st.warning('사용자 조건에 따라 저장소 파일을 불러옵니다.', icon="⚠️")
                 save_df = pd.read_csv('./datasets/' + 'ECM_타법인출자-단순투자-{}-{}.csv'.format(year, r_code))
                 st.dataframe(save_df)
-                save_df = convert_df(save_df, encode_opt = True)
+                save_df = ecm2.convert_df(save_df, encode_opt = True)
                 st.download_button(label="Download", data=save_df, file_name='ECM_타법인출자-단순투자-{}-{}.csv'.format(year, r_code), mime='text/csv')
 
         else:
