@@ -13,8 +13,8 @@ import os
 import ecm2
 
 # 폰트 관련 세팅
-font_name = fm.FontProperties(fname='./malgun.ttf').get_name()
-rc('font', family=font_name)
+#font_name = fm.FontProperties(fname='./malgun.ttf').get_name()
+#rc('font', family=font_name)
 
 # API 관련 세팅
 warnings.filterwarnings(action='ignore')
@@ -53,7 +53,6 @@ def get_data(knd, corp_nm, start_dt, end_dt, intr_ex_min, intr_ex_max, intr_sf_m
         df.loc[df['표면이자율(%)'] == -1000, '표면이자율(%)'] = '-'
         df.loc[df['만기이자율(%)'] == -1000, '만기이자율(%)'] = '-'
         df = df.reset_index(drop=True)
-        df.index += 1
     return df
 
 
@@ -100,7 +99,6 @@ if selected == "주식연계채권":
 
 elif selected == "타법인출자현황":
     st.header('ECM2부 - 타법인출자현황(단순투자)')
-
     with st.form(key='form2'):
         c1, c2 = st.columns(2)
         with c1:

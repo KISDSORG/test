@@ -14,7 +14,7 @@ warnings.filterwarnings('ignore')
 
 
 ## 01. functions
-def get_data(dart, code, year, quarter):
+def get_data(dart, code, year = 2022, quarter = "사업보고서"):
     select_cols = ['corp_cls', 'corp_code', 'corp_name', 'inv_prm', 'frst_acqs_de', 'invstmnt_purps', 'frst_acqs_amount', 'trmend_blce_qy', 'trmend_blce_qota_rt', 'trmend_blce_acntbk_amount']
     change_cols = ['법인구분', '고유번호', '회사명', '법인명', '최초취득일자', '출자목적', '최초취득금액', '기말잔액수량', '기말잔액지분율', '기말잔액장부가액']
     change_cls = {"Y":"유가", "K":"코스닥", "N":"코넥스", "E":"기타"}
@@ -33,12 +33,12 @@ def get_data(dart, code, year, quarter):
         return invst_df
 
 @st.cache_data
-def convert_df(df, encode_opt=False):
+def convert_df(df, encode_opt = False):
     # IMPORTANT: Cache the conversion to prevent computation on every rerun
     if encode_opt:
         return df.to_csv().encode('CP949')
     else:
-        return df.to_csv().encode('utf-8-sig')
+        return df.to_csv()
 
 def main(year, r_code):
     progress_text = "Operation in progress. Please wait."
@@ -79,7 +79,6 @@ def main(year, r_code):
 
             cnt += 1
             t_cnt += 1
-
             p_ratio = cnt / corp_df.shape[0]
             p_bar.progress(p_ratio, text=progress_text)
             time.sleep(sleep_opt)
@@ -113,7 +112,6 @@ def main(year, r_code):
 
     p_ratio = 1.0
     p_bar.progress(p_ratio, text=progress_text)
-
     try:
         save_df = output_df.loc[(output_df['출자목적'] == '단순투자') & (output_df['법인명'].isin(list(corp_df.corp_name.unique())))]
         save_df.index = [x for x in range(save_df.shape[0])]
@@ -124,5 +122,6 @@ def main(year, r_code):
         
         save_df2 = convert_df(save_df, True)
         st.download_button(label="Download", data=save_df2, file_name='ECM_타법인출자-단순투자-{}-{}.csv'.format(year, r_code), mime='text/csv')
+        
     except:
         st.write("수집 데이터 없음")
