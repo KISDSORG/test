@@ -1,4 +1,4 @@
-cd 'C:\Users\Administrator\Desktop\ccm\test'
+git config --global credential.credentialStore wincredman
 
 git pull
 git add Mezzanine_bk.pkl
